@@ -3,17 +3,10 @@
 #include <cstdlib>
 using namespace std;
 class Heap {
-public:
+private:
     int *arr;
     int size = 0;
     int capacity = 2;
-public:
-    Heap(){
-        arr = new int[2];
-    }
-    ~Heap(){
-        delete arr;
-    }
     int getLeftChildIndex(int parentIndex) {return parentIndex*2+1;};
     int getRightChildIndex(int parentIndex) {return parentIndex*2+2;};
     int getParentIndex(int childIndex){return (childIndex-1)/2;}
@@ -47,6 +40,13 @@ public:
             currentParent = smallest_index;
         }
     }
+public:
+    Heap(){
+        arr = new int[2];
+    }
+    ~Heap(){
+        delete arr;
+    }
 
     void add(int key){
         if(size+1 > capacity)
@@ -71,7 +71,7 @@ public:
 
 int main() {
     Heap h;
-    int size = 1000;
+    int size = 10;
     for(int i = 1; i <= size; ++i)
     {
         int temp = rand()%10+1;
