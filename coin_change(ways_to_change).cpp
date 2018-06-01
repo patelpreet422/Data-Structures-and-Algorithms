@@ -13,7 +13,7 @@ int waysToChangeHelper(int coin, const unordered_set<int> &coins, const auto &cu
 	for(auto it = current_it; it != coins.end();++it)
 	{
 		int current_coin = *it;
-		if(coin-*it>=0)
+		if(coin-current_coin>=0)
 		{
 			chosen += to_string(current_coin);
 			ways += waysToChangeHelper(coin-current_coin, coins, it, chosen);
