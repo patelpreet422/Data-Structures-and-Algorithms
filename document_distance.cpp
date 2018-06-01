@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <map>
+#include <unordered_map>
 #include <numeric>
 #include <cmath>
 #include <cctype>
@@ -22,9 +22,9 @@ const string readFile(const string &name)
     return temp;
 }
 
-const map<string, int> wordFrequency(const string &str)
+const unordered_map<string, int> wordFrequency(const string &str)
 {
-    map<string, int> wordMap;
+    unordered_map<string, int> wordMap;
     string temp;
     for(int i = 0; i < str.size(); ++i)
     {
@@ -60,7 +60,7 @@ const map<string, int> wordFrequency(const string &str)
     return wordMap;
 }
 
-float magnitude(const map<string, int> &m)
+double magnitude(const unordered_map<string, int> &m)
 {
     int sum_of_square_of_terms = 0;
     for(const auto &e: m)
@@ -70,9 +70,9 @@ float magnitude(const map<string, int> &m)
     return sqrt(sum_of_square_of_terms);
 }
 
-float computeAngle(const map<string, int> &f1, const map<string, int> &f2)
+double computeAngle(const unordered_map<string, int> &f1, const unordered_map<string, int> &f2)
 {
-    float res = 0;
+    double res = 0;
     for(auto it1 = f1.begin(); it1 != f1.end(); ++it1)
     {
         string word_from_file1 = it1->first;
@@ -89,8 +89,8 @@ float compareFile(const string &name1, const string &name2)
 {
     const string file1Content = readFile(name1);
     const string file2Content = readFile(name2);
-    map<string, int> wordMap_file1 = wordFrequency(file1Content);
-    map<string, int> wordMap_file2 = wordFrequency(file2Content);
+    unordered_map<string, int> wordMap_file1 = wordFrequency(file1Content);
+    unordered_map<string, int> wordMap_file2 = wordFrequency(file2Content);
     return computeAngle(wordMap_file1, wordMap_file2);
 }
 
