@@ -2,7 +2,7 @@
 #include <unordered_set>
 using namespace std;
 
-int waysToChangeHelper(int coin, const unordered_set<int> &coins, const auto &current_it, string chosen)
+int waysToChangeHelper(int coin, const unordered_set<int> &coins, unordered_set<int>::const_iterator current_it, string chosen)
 {
 	if(coin == 0)
 	{
