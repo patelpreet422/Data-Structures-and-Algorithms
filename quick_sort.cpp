@@ -1,48 +1,33 @@
 #include <iostream>
-//#include <algorithm>
+#include <algorithm>
 using namespace std;
 
-int partition(int *arr, int low, int pivot, int high)
-{
-	while(low<=high)
-	{
-		while(arr[low]<pivot)++low;
-		while(arr[high]>pivot)--high;
-		if(low<=high) 
-		{
-			swap(arr[low], arr[high]);
-			++low;
-			--high;
-		}
-	}
-	return low;
+int partition(int *array, int low, int high){
+    int pivot = array[(low + high)/2];
+    while(low<=high){
+        while(array[low] < pivot) ++low;
+        while(array[high] > pivot) --high;
+        if(low <= high) swap(array[low++], array[high--]);
+    }
+    return low;
 }
-
-void quickSortHelper(int *arr, int low, int high)
-{
-	if(low>=high) return;
-	int pivot = arr[(low+high)/2];
-	int partitionPoint=partition(arr, low, pivot, high);
-	quickSortHelper(arr, low, partitionPoint-1);
-	quickSortHelper(arr, partitionPoint, high);
+void quickSortHelper(int *array, int low, int high){
+    if(low >= high) return;
+    int partitionPoint = partition(array, low, high);
+    quickSortHelper(array, low, partitionPoint-1);
+    quickSortHelper(array, partitionPoint, high);
 }
-
-void quickSort(int *arr, int size)
-{
-	quickSortHelper(arr, 0, size-1);
+void quickSort(int *array, int size){
+    quickSortHelper(array, 0, size - 1);
 }
 int main()
 {
-	int size = 160;
-	int arr[size];
-	for(int i = 0; i < size; ++i)
-	{
-		arr[i] = rand()%10+1;
-	}
-  quickSort(arr, size);
-	for(int i = 0; i < size; ++i)
-	{
-		cout << arr[i] << ' ';
-	}
-	return 0;
+    int size = 10;
+    int array[size];
+    for(int i = 0; i < size; ++i){
+        array[i] = rand()%10 + 1;
+    }
+    quickSort(array, size);
+    for_each(array, array+size, [](const auto &e){cout << e << ' ';});
+    return 0;
 }
