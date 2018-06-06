@@ -4,7 +4,7 @@ template <class T>
 struct Node
 {
     T data;
-    Node(T d = 0):data(d){}
+    explicit Node(T d = 0):data(d){}
     Node *next = nullptr;
     ~Node(){delete next;}
     //TODO: write copy ctor, move ctor, copy assignment operator, move assignment operator
