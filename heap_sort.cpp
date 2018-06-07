@@ -1,3 +1,5 @@
+/*if you are using Visual Studio then uncomment the line below*/
+//#pragma warning(disable : 4996)
 #include <iostream>
 //#include <algorithm>
 #include <cstdlib>
