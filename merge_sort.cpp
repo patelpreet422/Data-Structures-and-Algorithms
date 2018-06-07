@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <algorithm>
 using namespace std;
@@ -20,17 +21,19 @@ void mergeSortHelper(int *array, int low, int high, int *temp){
     merge(array, low, mid, high, temp);
 }
 void mergeSort(int *array, int size){
-    int temp[size];
+    int *temp = new int[size];
     mergeSortHelper(array, 0, size - 1, temp);
+    delete[] temp;
 }
 int main()
 {
     int size = 10;
-    int array[size];
+    int *array = new int[size];
     for(int i = 0; i < size; ++i){
         array[i] = rand()%10 + 1;
     }
     mergeSort(array, size);
     for_each(array, array+size, [](const auto &e){cout << e << ' ';});
+    delete[] array;
     return 0;
 }
