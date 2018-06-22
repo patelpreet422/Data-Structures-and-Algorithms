@@ -2,6 +2,18 @@
 #include <vector>
 #include <string>
 using namespace std;
+
+inline constexpr int len_i(int i)
+{
+	int count = 0;
+	while(i)
+	{
+		i = i/10;
+		++count;
+	}
+	return count;
+}
+
 int ways_to_come_down(int stairs, const vector<int> &steps, string &chosen)
 {
     if(stairs < 0) return 0;
@@ -13,9 +25,10 @@ int ways_to_come_down(int stairs, const vector<int> &steps, string &chosen)
     int ways = 0;
     for(const auto &e: steps)
     {
-        chosen.push_back(e+'0');
+        chosen += to_string(e);
         ways += ways_to_come_down(stairs-e, steps, chosen);
-        chosen.pop_back();
+        int l = len_i(e);
+        chosen.erase(chosen.size()-l, l);
     }
     return ways;
 }
