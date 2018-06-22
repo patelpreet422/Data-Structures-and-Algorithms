@@ -1,7 +1,18 @@
 #include <iostream>
-#include <string>
 #include <vector>
+#include <string>
 using namespace std;
+
+inline constexpr int len_i(int i)
+{
+	int count = 0;
+	while(i)
+	{
+		i = i/10;
+		++count;
+	}
+	return count;
+}
 
 int waysToChangeHelper(int coin, const vector<int> &coins, int current_it, string &chosen)
 {
@@ -17,9 +28,10 @@ int waysToChangeHelper(int coin, const vector<int> &coins, int current_it, strin
 		int current_coin = coins[i];
 		if(coin-current_coin>=0)
 		{
-			chosen.push_back(current_coin+'0');
+			chosen += to_string(current_coin);
 			ways += waysToChangeHelper(coin-current_coin, coins, i, chosen);
-			chosen.pop_back();
+			int l = len_i(current_coin);
+			chosen.erase(chosen.size()-l, l);
 		}
 	}
 	return ways;
@@ -27,7 +39,7 @@ int waysToChangeHelper(int coin, const vector<int> &coins, int current_it, strin
 
 int waysToChange(int coin, const vector<int> &coins)
 {
-    string chosen = "";
+  string chosen = "";
 	return waysToChangeHelper(coin, coins, 0, chosen);
 }
 
@@ -35,6 +47,6 @@ int main()
 {
 	int coin = 5;
 	vector<int> coins{1, 2, 3, 4, 5, 6, 7, 8, 9};
-	cout << waysToChange(coin, coins) << '\n';
+    waysToChange(coin, coins);
 	return 0;
 }
