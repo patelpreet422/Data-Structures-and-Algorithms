@@ -14,7 +14,7 @@ class LinkedList
 {
 private:
     Node<T> head;
-    int size = 0;
+    size_t size = 0;
 public:
     void insert(T d)
     {
