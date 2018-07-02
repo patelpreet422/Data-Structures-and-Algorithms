@@ -2,7 +2,7 @@
 using namespace std;
 struct Base 
 {
-    //if you remove virtual program will not compile
+    //if you use dynamic_cast then you must have polymorphic base class
     virtual void bf()
     {
         cout << "Base\n";
