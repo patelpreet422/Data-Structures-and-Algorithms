@@ -23,7 +23,8 @@ struct Derived : public Base
 }; 
 int main() 
 { 	
-    Base *b = new Base; 	
+    Base *b = new Base; 
+    //even static_cast will do
     Derived *pd = dynamic_cast<Derived*>(b);
     //now b has been casted to Derived so bf is not visible to Derived
     pd->df();
