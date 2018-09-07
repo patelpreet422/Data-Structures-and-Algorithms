@@ -1,5 +1,6 @@
 /*
 hackerrank: https://www.hackerrank.com/challenges/array-left-rotation/problem
+hackerrank: https://www.hackerrank.com/challenges/circular-array-rotation/problem (See testcase 4)
 */
 #include <iostream>
 using namespace std;
@@ -14,7 +15,9 @@ void rotate(unsigned long long *arr, int size, int amount)
 	*/
 	for (int i = 0; i < size; ++i)
 	{
-		cout << (size + i - amount) % size + 1 << ' ';
+		// amount%size is for handling case when amount > size
+		// for amount <= size arr[(size + i - amount) % size + 1] will also do
+		cout << (size + i - amount%size) % size + 1 << ' ';
 	}
 }
 
