@@ -13,11 +13,12 @@ void rotate(unsigned long long *arr, int size, int amount)
 	4, 1, 2, 3
 	(size+idx-amount)%size
 	*/
+	amount = amount%size;
 	for (int i = 0; i < size; ++i)
 	{
 		// amount%size is for handling case when amount > size
 		// for amount <= size arr[(size + i - amount) % size + 1] will also do
-		cout << (size + i - amount%size) % size + 1 << ' ';
+		cout << (size + i - amount) % size + 1 << ' ';
 	}
 }
 
