@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 #include <algorithm>
 #include <cmath>
 using namespace std;
@@ -29,18 +30,39 @@ int max_element_size(vector<int> &vec)
   return max(int_size(mx), int_size(mi));
 }
 
+void counting_sort(vector<int> & vec, int p)
+{
+  unordered_map<int, vector<int> > freq;
+  for(auto i: vec)
+    {
+      freq[extract_digit(i, p)].push_back(i);
+    }
+  int k = 0;
+  for(int i = -9; i < 10; ++i)
+    {
+      if(freq.find(i) != freq.end())
+        {
+          for(auto elem: freq[i])
+            {
+              vec[k++] = elem;
+            }
+        }
+    }
+}
+
 void radix_sort(vector<int> &vec)
 {
   auto l = max_element_size(vec);
-  for(int k = 1; k <= l; ++k)
+  for(int p = 1; p <= l; ++p)
     {
-      sort(vec.begin(), vec.end(), [k = k](int a, int b){ return  extract_digit(a, k) < extract_digit(b, k);});
+//      sort(vec.begin(), vec.end(), [p = p](int a, int b){ return  extract_digit(a, p) < extract_digit(b, p);});
+      counting_sort(vec, p);
     }
 }
 
 int main()
 {
-  vector<int> vec{170, 45, 75, 90, 802, 24, 2, 66};
+  vector<int> vec{-7877878, 170, 45, 75, -8587, 0, 0, 90, 802, 24, 2, 66};
   radix_sort(vec);
   for(auto i: vec) {
       cout << i << ", ";
