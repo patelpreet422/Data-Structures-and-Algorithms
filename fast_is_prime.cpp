@@ -4,7 +4,7 @@ bool isPrime(unsigned long k) {
     if (k < 1) return false;
     if (k <= 3) return true;
     if(k%2 == 0 || k%3 == 0) return false;
-    for(unsigned long i = 5, dx = 2; i*i <= k; i = i + dx, dx = (max(dx, 6ul) - min(dx, 6ul))) {
+    for(unsigned long i = 5, dx = 2; i*i <= k; i = i + dx, dx = (dx == 2) ? 4: 2) {
         if (k % i == 0) return false;
     }
     return true;
