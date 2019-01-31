@@ -14,7 +14,7 @@ void printKMax(int arr[], int n, int k){
     {
         if(i <= m_at && m_at <= i+k-1)
         {
-            m = max({m, arr[i-1], arr[i+k-1]});
+            m = max({m, outgoing_elem, arr[i+k-1]});
         }else{
             auto mp = max_element(arr + i, arr + i + k);
             m = *mp;
