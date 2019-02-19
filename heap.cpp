@@ -77,19 +77,27 @@ ostream& operator<<(ostream& os, const vector<int> &vec)
   return os;
 }
 
+vector<int> naiveMakeHeap(const vector<int> &vec)
+{
+  vector<int> vec2;
+  for(int i = 0; i < vec.size(); ++i)
+  {
+    pushHeap(vec2, vec[i]);
+  }
+  return vec2;
+}
+
 int main()
 {
-  vector<int> vec{35,33,42,10,4,19,27,44,26,31};
-  vector<int> vec2 = vec;
+  vector<int> vec{1, 10, 100};
+  vector<int> vec2 = naiveMakeHeap(vec);
 
-  /* make_heap(vec.begin(), vec.end()); */
-  /* vec.push_back(100); */
+  make_heap(vec.begin(), vec.end());
   /* push_heap(vec.begin(), vec.end()); */
   // sort_heap(vec.begin(), vec.end());
-  /* cout << "std::make_heap: " << vec << '\n'; */
+  cout << "std::make_heap: " << vec << '\n';
 
-  makeHeap(vec2);
-  pushHeap(vec2, 100);
+  // makeHeap(vec2);
   // heapSort(vec2);
   cout << "makeHeap: " << vec2 << '\n';
   return 0;
