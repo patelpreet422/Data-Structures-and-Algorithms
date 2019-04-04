@@ -1,26 +1,32 @@
 #include <iostream>
+#include <algorithm>
+#include <vector>
+#include <numeric>
+#include <bitset>
+#include <cmath>
+#include <map>
+
 using namespace std;
-void prime_factorisation(unsigned long k)
+using ul = unsigned long;
+
+vector<ul> prime_factors(ul k)
 {
-    while(k%2==0)
-    {
-        cout << 2 << ' ';
-        k = k/2;
-    }
-    int i = 3;
-    while(k!=1)
-    {
-        while(k%i==0)
-        {
-            cout << i << ' ';
-            k = k/i;
+    vector<ul> p_factors;
+    for(int i = 2; i*i <= k; ++i){
+        bool isfactor = false;
+        while(k%i == 0){
+            k /= i;
+            isfactor = true;
         }
-        i += 2;
+        if(isfactor) p_factors.push_back(i);
     }
+    if(k != 1)
+        p_factors.push_back(k);
+    return p_factors;
 }
+
 int main()
 {
-    prime_factorisation(225);
-    cout << '\n';
+    for(auto e: prime_factors(15)) cout << e << ' ';
     return 0;
 }
