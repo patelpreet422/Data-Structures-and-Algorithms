@@ -6,10 +6,6 @@ using namespace std;
 
 int gcd(int a, int b)
 {
-    int c;
-    while(b)
-    {
-        a = exchange(b, a%b);
-    }
+    while(b) a = exchange(b, a%b);
     return a;
 }
