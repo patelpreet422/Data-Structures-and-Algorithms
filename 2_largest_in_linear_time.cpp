@@ -1,26 +1,29 @@
 #include <iostream>
+#include <vector>
 using namespace std;
-void two_largest(int* arr, int s, int& first, int& second)
+pair<int, int> two_largest(const vector<int> &vec)
 {
-    first = second = *arr;
-    for(int i = 1; i < s; ++i)
+    int first = vec[0];
+    int second = vec[0];
+    for(int i = 1; i < vec.size(); ++i)
     {
-        if(first < arr[i])
+        if(first < vec[i])
         {
-            second = first;
-            first = arr[i];
+            if(second!=first)second = first;
+            first = vec[i];
         }
-        else if(second < arr[i])
+        else if(second < vec[i] && vec[i]!=first)
         {
-            second = arr[i];
+            second = vec[i];
         }
     }
+    return make_pair(first, second);
 }
 int main()
 {
-    int arr[5] = {3, 1, 5, 2, 7};
+    vector<int> arr = {3, 8, 9, 1, 2, 7};
     int f = 0, s = 0;
-    two_largest(arr, sizeof(arr)/sizeof(int), f, s);
-    cout << f << ", " << s << '\n';
+    auto m = two_largest(arr);
+    cout << m.first << ", " << m.second << '\n';
     return 0;
 }
