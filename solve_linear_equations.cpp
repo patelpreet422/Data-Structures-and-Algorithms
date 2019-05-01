@@ -1,4 +1,13 @@
 // https://www.algorithm-archive.org/contents/gaussian_elimination/gaussian_elimination.html
+/*
+Why choose a pivot with largest absolute value?
+
+Such a partial pivoting may be required if, at the pivot place, the entry of the matrix is zero.
+In any case, choosing the largest possible absolute value of the pivot improves the numerical 
+stability of the algorithm, when floating point is used for representing numbers.
+
+https://en.m.wikipedia.org/wiki/Gaussian_elimination
+*/
 
 #include <vector>
 #include <numeric>
