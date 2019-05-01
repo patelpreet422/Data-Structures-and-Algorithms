@@ -1,3 +1,5 @@
+// https://www.algorithm-archive.org/contents/gaussian_elimination/gaussian_elimination.html
+
 #include <vector>
 #include <numeric>
 #include <valarray>
