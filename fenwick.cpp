@@ -1,72 +1,62 @@
 #include <iostream>
-#include <cstdio>
 #include <vector>
 using namespace std;
 
-template <typename T>
-T set_rightmost_bit_off(T k)
+//0-based indexing
+struct Fenwick
 {
-	return k&(k-1);
-}
-
-template <typename U, typename T>
-U calculate_sum(T arr, U idx)
-{
-	U res = 0;
-	while(idx)
+	vector<int> bit;
+	Fenwick() = delete;
+	Fenwick(size_t s)
 	{
-		res += arr[idx-1];
-		idx = set_rightmost_bit_off(idx);
+		bit.resize(s+1, 0);
 	}
-	return res;
-}
 
-template <typename T>
-T make_BIT(T vec)
-{
-	T BIT(vec.size());
-	for(size_t i = 0; i < vec.size(); ++i)
+	//O(n) construction
+	Fenwick(const vector<int>& vec)
 	{
-		auto idx = i+1;
-		while(idx <= vec.size())
+		bit = {0};
+		bit.insert(bit.begin()+1, vec.begin(), vec.end());
+		for(size_t i = 1; i <= vec.size(); ++i)
 		{
-			BIT[idx-1] += vec[i];
-			idx += idx & (-idx);
+			int parent = i + (i&-i);
+			if(parent <= vec.size())
+				bit[parent] += bit[i];
 		}
 	}
-	return BIT;
-}
 
-int naive(vector<int> vec, int k)
-{
-	int s = 0;
-	for(int i = 0; i < k; ++i)
+	int sum(int i)
 	{
-		s += vec[i];
+		int res = 0;
+		++i;
+		for(; i > 0; i -= (i&-i))
+			res += bit[i];
+		return res;
 	}
-	return s;
-}
 
-int max_sum(vector<int> vec)
-{
-	int s = 0;
-	for(int i: vec)
+	int sum(int i, int j)
 	{
-		s += i;
-		if(s <= 0)
-		    s = 0;
+		return sum(j) - sum(i-1);
 	}
-	return s;
-}
+
+	void add(int i, int delta)
+	{
+		++i;
+		for(; i <= bit.size(); i += (i&-i))
+			bit[i] += delta;
+	}
+};
 
 int main()
 {
-	vector<int> vec {7, -4, 15, -22, 13, -3};
-	
-	auto BIT = make_BIT(vec);
-	
-	
-	
-	cout << max_sum(vec) << '\n';
-  return 0;
+	vector<int> vec {2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
+	Fenwick t(vec);
+
+	for(int i = 0; i < vec.size(); ++i)
+		for(int j = i; j <vec.size(); ++j)
+		{
+			cout << "i: " << i << ", j: " << j << " " <<  t.sum(i, j) << '\n';
+		}
+	//for(auto e: t.bit) cout << e << " ";
+	return 0;
 }
