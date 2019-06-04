@@ -73,7 +73,7 @@ public:
         return adjacencyList[vertex];
     }
 
-    void add_edge(int v1, int v2, bool directed, int weight = 0) {
+    void add_edge(int v1, int v2, bool directed, int weight = 1) {
 
         if(adjacencyList.find(v1) == adjacencyList.end())
         {
