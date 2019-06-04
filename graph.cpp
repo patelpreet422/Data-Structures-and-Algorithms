@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -64,7 +65,7 @@ public:
     }
 
     Graph(adjacency_list_t al, edge_weight_t ew, int s, bool w):
-        adjacencyList(move(al)), edgeWeight(move(ew)), vertices(s), weighted(w)
+            adjacencyList(move(al)), edgeWeight(move(ew)), vertices(s), weighted(w)
     {}
 
     Graph(int s, bool w): vertices(s), weighted(w) {}
@@ -73,30 +74,17 @@ public:
         return adjacencyList[vertex];
     }
 
-    void add_edge(int v1, int v2, bool directed, int weight = 1) {
+    void add_edge(int v1, int v2, int weight = 1, bool directed = true) {
 
         if(adjacencyList.find(v1) == adjacencyList.end())
         {
             adjacencyList[v1] = {v2};
-            if(!directed) add_edge(v2, v1, true, weight);
+            if(!directed) add_edge(v2, v1, weight);
         } else {
             adjacencyList[v1].push_back(v2);
-            if(!directed) add_edge(v2, v1, true, weight);
+            if(!directed) add_edge(v2, v1, weight);
         }
 
         if(weighted) edgeWeight[make_pair(v1, v2)] = weight;
     }
 };
-
-int main() {
-    Graph g(5, true);
-
-    for(int i = 0; i < 6; ++i)
-    {
-        int v1, v2, w;
-        cin >> v1 >> v2 >> w;
-        g.add_edge(v1, v2, true, w);
-    }
-    
-    return 0;
-}
