@@ -113,7 +113,7 @@ unordered_map<vertex_t, weight_t> dijkstra(Graph g, vertex_t s, vertex_t t)
 
         for(auto neighbour: g.neighbours(current_vertex))
         {
-            if(d[neighbour] > (d[current_vertex] + g.edgeWeight[make_pair(current_vertex, neighbour)]))
+            if(d[neighbour] >= (d[current_vertex] + g.edgeWeight[make_pair(current_vertex, neighbour)]))
             {
                 d[neighbour] = d[current_vertex] + g.edgeWeight[make_pair(current_vertex, neighbour)];
                 path_weight.insert(make_pair(d[neighbour], neighbour));
