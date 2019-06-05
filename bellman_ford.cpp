@@ -127,6 +127,7 @@ unordered_map<vertex_t, weight_t> bellman_ford(Graph g, int s, int t)
         }
     }
 
+    cout << "Cost: " << d[t] << ", "; 
     // print path
     stack<vertex_t> temp;
     for(vertex_t current_vertex = t; current_vertex != numeric_limits<int>::max(); current_vertex = parent[current_vertex])
