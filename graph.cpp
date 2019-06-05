@@ -87,4 +87,9 @@ public:
 
         if(weighted) edgeWeight[make_pair(v1, v2)] = weight;
     }
+    
+    weight_t edge_weight(vertex_t v1, vertex_t v2)
+    {
+        return edgeWeight[make_pair(v1, v2)];
+    }
 };
