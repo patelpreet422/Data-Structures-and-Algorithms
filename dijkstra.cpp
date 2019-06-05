@@ -86,6 +86,11 @@ public:
 
         if(weighted) edgeWeight[make_pair(v1, v2)] = weight;
     }
+    
+    weight_t edge_weight(vertex_t v1, vertex_t v2)
+    {
+        return edgeWeight[make_pair(v1, v2)];
+    }
 };
 
 unordered_map<vertex_t, weight_t> dijkstra(Graph g, vertex_t s, vertex_t t)
@@ -113,9 +118,9 @@ unordered_map<vertex_t, weight_t> dijkstra(Graph g, vertex_t s, vertex_t t)
 
         for(auto neighbour: g.neighbours(current_vertex))
         {
-            if(d[neighbour] >= (d[current_vertex] + g.edgeWeight[make_pair(current_vertex, neighbour)]))
+            if(d[neighbour] >= (d[current_vertex] + g.edge_weight(current_vertex, neighbour)))
             {
-                d[neighbour] = d[current_vertex] + g.edgeWeight[make_pair(current_vertex, neighbour)];
+                d[neighbour] = d[current_vertex] + g.edge_weight(current_vertex, neighbour);
                 path_weight.insert(make_pair(d[neighbour], neighbour));
                 parent[neighbour] = current_vertex;
             }
@@ -139,10 +144,11 @@ unordered_map<vertex_t, weight_t> dijkstra(Graph g, vertex_t s, vertex_t t)
             vertex_t cv = path_node.top();
             path_node.pop();
             if(!path_node.empty())
-                cout << cv << " >>[" << g.edgeWeight[{cv, path_node.top()}] << "]>> ";
+                cout << cv << " >>[" << g.edge_weight(cv, path_node.top()) << "]>> ";
             else
                 cout << cv ;
         }
+        cout << '\n';
     }
 
     return d;
