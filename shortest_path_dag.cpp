@@ -86,6 +86,11 @@ public:
 
         if(weighted) edgeWeight[make_pair(v1, v2)] = weight;
     }
+    
+    weight_t edge_weight(vertex_t v1, vertex_t v2)
+    {
+        return edgeWeight[make_pair(v1, v2)];
+    }
 };
 
 void topological_sort_helper(Graph g, vertex_t vertex, unordered_set<vertex_t>& visited, stack<vertex_t>& ordered_vertices)
@@ -141,9 +146,9 @@ unordered_map<vertex_t, weight_t> shortest_path_dag(Graph g, int s, int t)
         if(d[current_vertex] == numeric_limits<int>::max()) continue;
         for(auto neighbour: g.neighbours(current_vertex))
         {
-            if(d[neighbour] > (d[current_vertex] + g.edgeWeight[{current_vertex, neighbour}]))
+            if(d[neighbour] > (d[current_vertex] + g.edge_weight(current_vertex, neighbour)))
             {
-                d[neighbour] = d[current_vertex] + g.edgeWeight[{current_vertex, neighbour}];
+                d[neighbour] = d[current_vertex] + g.edge_weight(current_vertex, neighbour);
                 parent[neighbour] = current_vertex;
             }
         }
