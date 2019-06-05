@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include <numeric>
 using namespace std;
@@ -22,10 +23,12 @@ struct union_find
 	//for every node that lies in between node and root change its root to root that is reached in the end
 	int find(int p)
 	{
-		int q = p;
-		while(parent[q] != q)
-			q = parent[q];
+		int root = p;
+		while(parent[root] != root)
+			root = parent[root];
 
+		for(int q=p; parent[q]!=root; q=exchange(parent[q], root));
+		/*
 		int root = q;
 		while(parent[p] != root)
 		{
@@ -33,6 +36,7 @@ struct union_find
 			parent[p] = root;
 			p = prev_parent;
 		}
+		*/
 
 		return root;
 	}
