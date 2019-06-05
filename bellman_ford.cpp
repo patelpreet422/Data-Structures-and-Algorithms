@@ -86,6 +86,11 @@ public:
 
         if(weighted) edgeWeight[make_pair(v1, v2)] = weight;
     }
+    
+    weight_t edge_weight(vertex_t v1, vertex_t v2)
+    {
+        return edgeWeight[make_pair(v1, v2)];
+    }
 };
 
 // O(V*E)
@@ -113,9 +118,9 @@ unordered_map<vertex_t, weight_t> bellman_ford(Graph g, int s, int t)
 
             for(auto neighbour: g.neighbours(v1))
             {
-                if(d[neighbour] > (d[v1] + g.edgeWeight[{v1, neighbour}]))
+                if(d[neighbour] > (d[v1] + g.edge_weight(v1, neighbour)))
                 {
-                    d[neighbour] = d[v1] + g.edgeWeight[{v1, neighbour}];
+                    d[neighbour] = d[v1] + g.edge_weight(v1, neighbour);
                     parent[neighbour] = v1;
                 }
             }
