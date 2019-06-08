@@ -1,45 +1,31 @@
 #include <iostream>
 #include <vector>
-#include <string>
+#include <limits>
+#include <stack>
+#include <algorithm>
+#include <numeric>
+
 using namespace std;
+using ul = unsigned long;
 
-inline constexpr int len_i(int i)
+bool subset_sum(vector<int> vec, int i, int target, string chosen)
 {
-	int count = 0;
-	while(i)
-	{
-		i = i/10;
-		++count;
-	}
-	return count;
+    if(target == 0) {
+        cout << chosen << '\n';
+        return true;
+    }
+    
+    if(target < 0 || i == vec.size()) return false;
+
+    // || is used to for short-circuit evaluation
+    // i.e, || will not check second boolean expression is first expression returns true
+    // | will check second boolean expression even if first expression is true
+
+    return subset_sum(vec, i+1, target-vec[i], chosen+" + "+to_string(vec[i])) | subset_sum(vec, i+1, target, chosen);
 }
 
-void subset_sum_exist(int target, int index, const vector<int> &numbers, string &chosen)
-{
-	  if(target < 0) return;
-    if(target == 0)
-    {
-    	cout << chosen << '\n';
-    }
-    for(int i = index; i<numbers.size(); ++i)
-    {
-    	int e = numbers[i];
-    	chosen += to_string(e);
-    	subset_sum_exist(target-e, i+1, numbers, chosen);
-    	int l = len_i(e);
-    	chosen.erase(chosen.size()-l, l);
-    }
-}
-void subset_sum_exist(int target, const vector<int> &numbers)
-{
-	  string chosen = "";
-    subset_sum_exist(target, 0, numbers, chosen);
-}
-int main()
-{
-    int target = 10;
-    vector<int> numbers{2, 3, 5, 6, 8, 10};
-    //vector<int> numbers{1, 2, 3, 4, 5};
-    subset_sum_exist(target, numbers);
+int main() {
+    vector<int> vec{1, 2, 3, 5, 4, 6, 3};
+    subset_sum(vec, 0, 7, "");
     return 0;
 }
