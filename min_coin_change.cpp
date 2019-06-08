@@ -7,22 +7,24 @@ using namespace std;
 
 int minimum_coin_change(vector<int> coins, int target)
 {
-    vector<int> min_coins(target+1, target+1);
+    vector<vector<int>> dp(coins.size()+1, vector<int>(target+1, target+1));
 
-    min_coins[0] = 0;
+    // dp[0][value] = infinity, here target+1 is placeholder for infinity
 
-    for(int value = 0; value <= target; ++value)
+    for(int coin_idx = 0; coin_idx <= coins.size(); ++coin_idx)
+        dp[coin_idx][0] = 0;
+
+    for(int coin_idx = 1; coin_idx <= coins.size(); ++coin_idx)
     {
-        for(auto coin: coins)
-        {
-            if(coin <= value)
+        for (int value = 0; value <= target; ++value) {
+            if(value >= coins[coin_idx-1])
             {
-                min_coins[value] = min(min_coins[value], 1+min_coins[value-coin]);
+                dp[coin_idx][value] = min(dp[coin_idx-1][value], 1+dp[coin_idx][value-coins[coin_idx-1]]);
             }
         }
     }
 
-    return min_coins[target];
+    return dp[coins.size()][target];
 }
 
 int main() {
