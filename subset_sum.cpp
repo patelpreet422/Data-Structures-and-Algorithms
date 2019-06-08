@@ -1,20 +1,22 @@
 #include <iostream>
 #include <vector>
+#include <limits>
+#include <stack>
+#include <algorithm>
+#include <numeric>
+
 using namespace std;
-bool subset_sum_exist(int target, int index, const vector<int> &numbers)
+using ul = unsigned long;
+
+bool subset_sum(vector<int> vec, int i, int target)
 {
     if(target == 0) return true;
-    if(index == numbers.size()) return false;
-    return subset_sum_exist(target, index+1, numbers) || subset_sum_exist(target-numbers[index], index+1, numbers);
+    if(target < 0 || i == vec.size()) return false;
+    return subset_sum(vec, i+1, target-vec[i]) || subset_sum(vec, i+1, target);
 }
-bool subset_sum_exist(int target, const vector<int> &numbers)
-{
-    return subset_sum_exist(target, 0, numbers);
-}
-int main()
-{
-    int target = 9;
-    vector<int> numbers{3, 34, 4, 12, 5, 2};
-    cout << boolalpha << subset_sum_exist(target, numbers) << '\n';
+
+int main() {
+    vector<int> vec{1, 2, 3};
+    cout << subset_sum(vec, 0, 6) << '\n';
     return 0;
 }
