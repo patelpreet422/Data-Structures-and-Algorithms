@@ -1,52 +1,37 @@
 #include <iostream>
 #include <vector>
-#include <string>
 using namespace std;
 
-inline constexpr int len_i(int i)
+/*
+int change(vector<int>& coins, int target, int k)
 {
-	int count = 0;
-	while(i)
-	{
-		i = i/10;
-		++count;
-	}
-	return count;
+    if(target == 0) return 1;
+
+    int ways = 0;
+
+    for(int i = k; i < coins.size(); ++i)
+    {
+        if(target - coins[i] >= 0)
+            ways += change(coins, target-coins[i], i);
+    }
+
+    return ways;
+}
+*/
+
+int change(vector<int>& coins, int target, int i)
+{
+    if(i >= coins.size()) return 0;
+    if(target == 0) return 1;
+    if(target < 0) return 0;
+    return change(coins, target-coins[i], i) + change(coins, target, i+1);
 }
 
-int waysToChangeHelper(int coin, const vector<int> &coins, int current_it, string &chosen)
-{
-	
-	if(coin == 0)
-	{
-		cout << chosen << '\n';
-		return 1;
-	}
-	int ways = 0;
-	for(int i = current_it; i < coins.size(); ++i)
-	{
-		int current_coin = coins[i];
-		if(coin-current_coin>=0)
-		{
-			chosen += to_string(current_coin);
-			ways += waysToChangeHelper(coin-current_coin, coins, i, chosen);
-			int l = len_i(current_coin);
-			chosen.erase(chosen.size()-l, l);
-		}
-	}
-	return ways;
-}
+int main() {
+    vector coins{1, 2, 3};
+    string chosen = "";
+    int ans = change(coins, 4, 0);
 
-int waysToChange(int coin, const vector<int> &coins)
-{
-  string chosen = "";
-	return waysToChangeHelper(coin, coins, 0, chosen);
-}
-
-int main()
-{
-	int coin = 5;
-	vector<int> coins{1, 2, 3, 4, 5, 6, 7, 8, 9};
-    waysToChange(coin, coins);
-	return 0;
+    cout << ans << '\n';
+    return 0;
 }
