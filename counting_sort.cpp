@@ -1,27 +1,28 @@
 #include <iostream>
+#include <vector>
 #include <algorithm>
-void counting_sort(int *arr, int size)
+
+using namespace  std;
+
+void counting_sort(vector<int>& vec)
 {
-    int max_e = *std::max_element(arr, arr+size);
-    int *aux_arr = new int[max_e+1];
-    for(int i = 0; i < size; ++i)
-    ++aux_arr[arr[i]];
-    
-    int j=0;
-    for(int i = 0; i < max_e+1; ++i)
-    {
-    	int temp = aux_arr[i];
-    	while(temp--)arr[j++] = i;
+    auto largest = *max_element(vec.begin(), vec.end());
+    vector<int> temp(largest+1, 0);
+    for(auto e: vec) ++temp[e];
+    vec.assign(vec.size(), 0);
+
+    for(size_t k = 0, i = 0; k < temp.size(); ++k) {
+        while(temp[k]) {
+            vec[i++] = k;
+            --temp[k];
+        }
     }
-    
-    delete[] aux_arr;
 }
+
 int main()
 {
-    int arr[] = {3, 2, 1};
-    int size = sizeof(arr)/sizeof(int);
-    counting_sort(arr, size);
-    for(int i = 0; i < size; ++i)
-    std::cout << arr[i] << '\n';
+    vector<int> vec{1, 45, 78, 1, 1, 1, 1, 2, 0, 0, 45};
+    counting_sort(vec);
+    for(auto e: vec) cout << e << " ";
     return 0;
 }
