@@ -22,13 +22,12 @@ uint mul_(uint a, uint b)
     if(a > b) swap(a, b);
 
     uint r = 0;
-    while(a != 1)
+    while(a > 0)
     {
         r += (a&1)? b: 0;
         a >>= 1;
         b <<= 1;
     }
-    r += b;
     return r;
 }
 
