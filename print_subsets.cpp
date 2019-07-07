@@ -1,24 +1,25 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
 using namespace std;
 
-void print_subsets(int* arr, size_t size)
+void subsets(vector<int>& vec, int i, string chosen)
 {
-  for(int i = 0; i < (1 << size); ++i)
-  {
-    for(int j = 0; j < size; ++j)
-    {
-      if((i & 1 << j) > 0)
-      {
-        cout << arr[j] << ' ';
-      }
-    }
-    cout << '\n';
-  }
+	static int c = 0;
+	if (i == vec.size()) {
+		cout << c << ": " <<chosen << '\n';
+		++c;
+		return;
+	}
+	subsets(vec, i + 1, chosen + " " + to_string(vec[i]));
+	subsets(vec, i + 1, chosen);
 }
 
 int main()
 {
-  int arr[] = {1, 2, 3};
-  print_subsets(arr, sizeof(arr)/sizeof(arr[0]));
-  return 0;
+	vector<int> vec{1, 2, 3, 4, 5};
+	subsets(vec, 0, "");
+	return 0;
 }
