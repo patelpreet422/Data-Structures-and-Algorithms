@@ -1,39 +1,73 @@
-
 #include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <iterator>
 #include <algorithm>
+#include <numeric>
 using namespace std;
 
-void merge(int *array, int low, int mid, int high, int *temp){
-    int left = low, right = mid+1, i=low;
-    while(left<=mid && right<=high){
-        if(array[left] <= array[right]) temp[i++] = array[left++];
-        else temp[i++] = array[right++];
+void mergesort(vector<int>& vec, vector<int>& temp, int64_t p, int64_t q)
+{
+    /*
+     *       [ left half ]  [ right half ]
+     *         p  lidx  mid     ridx     q
+     *         |   |     |       |       |
+     *        \/  \/    \/      \/      \/
+     * vec = [  ...  ...   ...      ...  ]
+     *
+     */
+    if(p >= q) return;
+
+    int64_t mid = (p+q)/2;
+
+    // recurse on left half
+    mergesort(vec, temp, p, mid);
+
+    // recurse on right half
+    mergesort(vec, temp, mid+1, q);
+
+    // temp stores the sorted array
+    // vector<int> temp(q-p+1);
+    int64_t tidx = 0, lidx = p, ridx = mid+1;
+
+    // len(left half) = mid - p + 1
+    // len(right half) = q - mid;
+    while(lidx <= mid && ridx <= q)
+    {
+        if(vec[lidx] <= vec[ridx])
+        {
+            temp[tidx++] = vec[lidx++];
+        } else {
+            temp[tidx++] = vec[ridx++];
+        }
     }
-    while(left <= mid) temp[i++] = array[left++];
-    while(right <= high) temp[i++] = array[right++];
-    for(i = low; i <= high;++i) array[i] = temp[i];
+
+    // copy left half
+    while(lidx <= mid) temp[tidx++] = vec[lidx++];
+
+    // copy right half
+    while(ridx <= q) temp[tidx++] = vec[ridx++];
+
+    //copy sorted array to vec
+    tidx = 0;
+    while(p <= q)
+    {
+        vec[p++] = temp[tidx++];
+    }
 }
-void mergeSortHelper(int *array, int low, int high, int *temp){
-    if(low >= high) return;
-    int mid = (low + high)/2;
-    mergeSortHelper(array, low, mid, temp);
-    mergeSortHelper(array, mid+1, high, temp);
-    merge(array, low, mid, high, temp);
+
+void mergesort(vector<int>& vec)
+{
+    vector<int> temp(vec.size());
+    mergesort(vec, temp, 0, vec.size()-1);
 }
-void mergeSort(int *array, int size){
-    int *temp = new int[size];
-    mergeSortHelper(array, 0, size - 1, temp);
-    delete[] temp;
-}
+
 int main()
 {
-    int size = 10;
-    int *array = new int[size];
-    for(int i = 0; i < size; ++i){
-        array[i] = rand()%10 + 1;
-    }
-    mergeSort(array, size);
-    for_each(array, array+size, [](const auto &e){cout << e << ' ';});
-    delete[] array;
+    int n; cin >> n;
+    vector<int> vec(n);
+    copy(istream_iterator<int>(cin),  istream_iterator<int>{}, begin(vec));
+    mergesort(vec);
+    for(auto e: vec) cout << e << " ";
     return 0;
 }
