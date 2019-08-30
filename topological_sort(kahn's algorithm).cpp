@@ -5,7 +5,7 @@
 #include <queue>
 using namespace std;
 
-void top_sort(const vector<vector<int>>& g) {
+bool top_sort(const vector<vector<int>>& g) {
   vector<int> in_degree(g.size(), 0);
   for(auto i = 0; i < g.size(); ++i) {
     for(auto e: g[i]) ++in_degree[e];
@@ -31,6 +31,8 @@ void top_sort(const vector<vector<int>>& g) {
   cout << '\n';
   for(auto e: ordered) cout << e << " ";
   cout << '\n';
+
+  return (ordered.size() == g.size()) ? true : false;
 }
 
 int main() {
@@ -46,6 +48,7 @@ int main() {
     g[v].push_back(u);
   }
 
-  top_sort(g);
+  auto possible = top_sort(g);
+  cout << boolalpha << possible << '\n';
   return 0;
 }
