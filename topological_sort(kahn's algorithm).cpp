@@ -11,6 +11,7 @@ bool top_sort(const vector<vector<int>>& g) {
     for(auto e: g[i]) ++in_degree[e];
   }
 
+  // for lexicographically first topological order use priority_queue
   queue<int> q;
   for(auto i = 0; i < g.size(); ++i)
     if(in_degree[i] == 0) q.push(i);
@@ -37,10 +38,6 @@ bool top_sort(const vector<vector<int>>& g) {
 
 int main() {
   int n, m; cin >> n >> m;
-
-  // g.size = n+1 if node start from 1, component returned from dfs = actual_component+1 (because zero is treated as seperate component)
-  // g.size = n   if node start from 0
-
   vector<vector<int>> g(n);
 
   for(int i = 1; i <= m; ++i) {
