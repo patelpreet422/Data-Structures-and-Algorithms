@@ -13,7 +13,7 @@ struct Fenwick
     }
 
     //O(n) construction
-    Fenwick(const vector<int>& vec)
+    Fenwick(const vector<T>& vec)
     {
         bit = {0};
         bit.insert(bit.begin()+1, vec.begin(), vec.end());
@@ -25,7 +25,7 @@ struct Fenwick
         }
     }
 
-    T sum(int i)
+    T sum(T i)
     {
         T res = 0;
         ++i;
@@ -34,12 +34,12 @@ struct Fenwick
         return res;
     }
 
-    T sum(int i, int j)
+    T sum(size_t i, size_t j)
     {
         return sum(j) - sum(i-1);
     }
 
-    void add(int i, int64_t delta)
+    void add(size_t i, T delta)
     {
         ++i;
         for(; i <= bit.size(); i += (i&-i))
