@@ -13,7 +13,7 @@ struct Fenwick
     }
 
     //O(n) construction
-    Fenwick(const vector<T>& vec)
+    explicit Fenwick(const vector<T>& vec)
     {
         bit = {0};
         bit.insert(bit.begin()+1, vec.begin(), vec.end());
@@ -21,6 +21,19 @@ struct Fenwick
         {
             int64_t parent = i + (i&-i);
             if(parent <= vec.size())
+                bit[parent] += bit[i];
+        }
+    }
+
+    //initilizer_list ctor
+    Fenwick(initializer_list<T> it)
+    {
+        bit = {0};
+        bit.insert(bit.begin()+1, it.begin(), it.end());
+        for(size_t i = 1; i <= it.size(); ++i)
+        {
+            int64_t parent = i + (i&-i);
+            if(parent <= it.size())
                 bit[parent] += bit[i];
         }
     }
@@ -45,6 +58,16 @@ struct Fenwick
         for(; i <= bit.size(); i += (i&-i))
             bit[i] += delta;
     }
+
+    friend ostream& operator<<(ostream& os, const Fenwick<T>& bit)
+    {
+        for(auto e: bit) os << e << " ";
+        return os;
+    }
+
+    typename vector<T>::iterator begin() {  return bit.begin(); }
+    typename vector<T>::iterator end() { return bit.end(); }
+
 };
 
 int main()
