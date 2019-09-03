@@ -1,63 +1,47 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
-#include <unordered_set>
 #include <stack>
 
 using namespace std;
 
-using vertex_t = int;
-using adjacency_list_t = unordered_map<vertex_t, vector<vertex_t>>;
-using weight_t = int;
-
-class Graph {
-public:
-    adjacency_list_t adjacencyList;
-    int size;
-    Graph(adjacency_list_t al, int s): adjacencyList(al), size(s) {}
-    vector<vertex_t> neighbours(vertex_t vertex) {
-        return adjacencyList[vertex];
-    }
-};
-
-void topological_sort_helper(Graph g, vertex_t vertex, unordered_set<vertex_t>& visited, stack<vertex_t>& ordered_vertices)
+void dfs(vector<vector<int>>& g, vector<bool>& visited, int start, stack<int>& stk)
 {
-    visited.insert(vertex);
-
-    for(auto neighbour: g.neighbours(vertex)){
-        if(visited.find(neighbour) == visited.end()){
-            topological_sort_helper(g, neighbour, visited, ordered_vertices);
+    if(visited[start]) return;
+    else {
+        visited[start] = true;
+        for(auto c:  g[start])
+        {
+            if(!visited[c]) dfs(g, visited, c, stk);
         }
-    }
-    ordered_vertices.push(vertex);
-}
-
-void topological_sort(Graph g)
-{
-    stack<vertex_t> ordered_vertices;
-
-    unordered_set<vertex_t> visited;
-
-    for(auto vertex: g.adjacencyList){
-        if(visited.find(vertex.first) == visited.end()){
-            topological_sort_helper(g, vertex.first, visited, ordered_vertices);
-        }
-    }
-
-    while(!ordered_vertices.empty()){
-        cout << ordered_vertices.top() << '\n';
-        ordered_vertices.pop();
+        stk.push(start);
     }
 }
 
-int main() {
-    adjacency_list_t adjacencyList{
-        {3, {5, 4}},
-        {1, {2, 3}},
-        {2, {3, 4}}
-    };
+void top_sort(vector<vector<int>>& g)
+{
+    stack<int> stk;
+    vector<bool> visited(g.size(), false);
+    for(int i = 0; i < g.size(); ++i) {
+        if(!visited[i]) dfs(g, visited, i, stk);
+    }
 
-    Graph g(adjacencyList, 5);
-    topological_sort(g);
+    while(!stk.empty()) {
+        cout << stk.top()+1 << " ";
+        stk.pop();
+    }
+}
+
+int main()
+{
+    int n, m; cin >> n >> m;
+    vector<vector<int>> g(n);
+
+    for(int i = 1; i <= m; ++i) {
+        int v, u; cin >> v >> u;
+        --v; --u;
+        g[v].push_back(u);
+    }
+
+    top_sort(g);
     return 0;
 }
