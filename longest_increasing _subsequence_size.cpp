@@ -14,7 +14,7 @@ int64_t lis_size(const vector<int64_t>& vec)
     int64_t len = 0;
     for(int64_t i = 0; i < vec.size(); ++i)
     {
-        auto d = upper_bound(res.begin(), res.end(), vec[i]) - res.begin();
+        auto d = lower_bound(res.begin(), res.end(), vec[i]) - res.begin();
         if(res[d] == numeric_limits<int64_t>::max()) ++len;
         res[d] = vec[i];
     }
