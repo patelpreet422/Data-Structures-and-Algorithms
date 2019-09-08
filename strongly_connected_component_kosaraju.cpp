@@ -73,8 +73,8 @@ void dfs(const vector<vector<int>>& g, int s, vector<int>& visited, unordered_ma
 }
 
 void kosaraju(vector<vector<int>>& g) {
-    stack<int> ordered = top_sort_(g);
     vector<vector<int>> rg = reverse_edge(g);
+    stack<int> ordered = top_sort_(rg);
 
     vector<int> visited(g.size(), false);
     unordered_map<int, vector<int>> component;
@@ -85,18 +85,22 @@ void kosaraju(vector<vector<int>>& g) {
         int top = ordered.top();
         ordered.pop();
         if(!visited[top]) {
-            // run dfs on reverse graph with starting vertex top
-            dfs(rg, top, visited, component, c);
+            
+            //dfs(g, top, visited, component, c);
+            cout << top << " ";
             ++c;
         }
     }
 
+    /*
     for(auto&& p: component)
     {
         cout << p.first << ": ";
         for(auto e: p.second) cout << e << " ";
         cout << '\n';
     }
+    */
+    
 }
 
 int main()
