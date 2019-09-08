@@ -86,20 +86,18 @@ void kosaraju(vector<vector<int>>& g) {
         ordered.pop();
         if(!visited[top]) {
             
-            //dfs(g, top, visited, component, c);
-            cout << top << " ";
+            dfs(g, top, visited, component, c);
+            //cout << top << " ";
             ++c;
         }
     }
 
-    /*
     for(auto&& p: component)
     {
         cout << p.first << ": ";
         for(auto e: p.second) cout << e << " ";
         cout << '\n';
     }
-    */
     
 }
 
