@@ -59,6 +59,20 @@ struct Fenwick
             bit[i] += delta;
     }
 
+    // O(log(n)*log(n)) lower bound 
+    // finds lower_bound of v prefix_sum of vector 
+    int lower_bound(int v)
+    {
+      int l = 0, h = bit.size()-1;
+      while(l<h)
+      {
+        int m =(l+h)/2;
+        if(v<=sum(m)) h = m;
+        else l = m+1;
+      }
+      return l;
+    }
+
     friend ostream& operator<<(ostream& os, const Fenwick<T>& bit)
     {
         for(auto e: bit) os << e << " ";
@@ -72,14 +86,8 @@ struct Fenwick
 
 int main()
 {
-	vector<int> vec {2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
-	Fenwick t(vec);
-
-	for(int i = 0; i < vec.size(); ++i)
-		for(int j = i; j <vec.size(); ++j)
-		{
-			cout << "i: " << i << ", j: " << j << " " <<  t.sum(i, j) << '\n';
-		}
-	//for(auto e: t.bit) cout << e << " ";
+	vector<int> vec {8, 2, 10, 100, 1, 2};
+	Fenwick<int> t(vec);
+  cout << t.lower_bound(8) << '\n';
 	return 0;
 }
