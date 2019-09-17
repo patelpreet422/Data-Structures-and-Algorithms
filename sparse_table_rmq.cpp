@@ -1,30 +1,32 @@
-#include <vector>
 #include <iostream>
-#include <climits>
-#include <numeric>
-#include <algorithm>
+#include <vector>
 #include <cmath>
 using namespace std;
 
-vector<vector<int>> sparse_table(vector<int>& vec)
-{
-    int n = vec.size();
-    vector<vector<int>> st(ceil(log2(n+1)), vector<int>(n));
-    for(int i = 0; i < n; ++i) st[0][i] = vec[i];
-    for(int i = 1; i < st.size(); ++i)
-        for(int j = 0; j + (1 << i) <= n; ++j)
-            st[i][j] = min(st[i-1][j], st[i-1][j + (1 << (i-1))]);
+vector<vector<int>> sparse_table(vector<int>& vec) {
+    // # rows in sparse table is same as the number
+    // of bits required to store the size of vec
+    // # bit to store a number = floor(log2(k)) + 1
+    vector<vector<int>> st(log2(vec.size())+1, vector<int>(vec.size()));
+    st[0] = vec;
+    for(int k = 1; k < st.size(); ++k) {
+        for(int i = 0; i + (1 << k) <= vec.size(); ++i) {
+            st[k][i] = min(st[k-1][i], st[k-1][i+(1 << (k-1))]);
+        }
+    }
     return st;
 }
 
-int query(vector<vector<int>>& st, int l, int r)
-{
-    int p = 31 - __builtin_clz(r-l);
-    return min(st[p][l], st[p][r - (1 << p) + 1]);
+int query(vector<vector<int>>& st, int l, int r) {
+    int len_interval = r-l+1;
+    int trailing_zeros = log2(len_interval);
+    return min(st[trailing_zeros][l], st[trailing_zeros][r - (1<<trailing_zeros) + 1]);
 }
 
 int main()
 {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
     int n; cin >> n;
     vector<int> vec(n);
     for(auto& e: vec) cin >> e;
