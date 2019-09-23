@@ -8,7 +8,13 @@ the latest version of boost available.
 Open the tar ball and extract to any folder. In my case it's `Downloads` folder. Once you extract boost it will create a folder like so `Downloads/boost_1_67_0`.
 
 > Note: Your folder may vary depending on the version of boost you downloaded.  
-Since I downloaded `boost_1_67_0` my extracted folder is named accordingly.  
+Since I downloaded `boost_1_67_0` my extracted folder is named accordingly.
+
+## Long story short just run these command
+```
+./bootstrap.sh  --with-python=/usr/bin/python3.6 --prefix=<where/to/install> 
+./b2 --layout=versioned variant=debug link=static threading=multi install
+```
 
 ## Bootstraping boost  
 ```sh
