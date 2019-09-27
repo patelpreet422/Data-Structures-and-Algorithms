@@ -29,7 +29,7 @@ void dfs(int v, int p) {
 void init() {
     previsit.assign(n, -1);
     postvisit.assign(n, -1);
-    up.assign(n, vector<int>(ceil(log2(n)+1), -1));
+    up.assign(n, vector<int>(log2(n)+1, -1));
     adj.assign(n, vector<int>());
 }
 
