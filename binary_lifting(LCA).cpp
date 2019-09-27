@@ -40,7 +40,7 @@ bool is_ancestor(int v, int u) {
 int lca(int v, int u) {
     if(is_ancestor(v, u)) return v;
     if(is_ancestor(u, v)) return u;
-    for(int i = up[0].size(); i >= 0; --i) {
+    for(int i = up[0].size()-1; i >= 0; --i) {
         if(!is_ancestor(up[v][i], u))
             v = up[v][i];
     }
