@@ -24,6 +24,8 @@ int main()
       return l[i] < r[i];
     });
   }
+  
+  // sort(begin(vec), end(vec));
 
   for(auto& r: vec) {
     for(auto e: r) cout << e << ' ';
