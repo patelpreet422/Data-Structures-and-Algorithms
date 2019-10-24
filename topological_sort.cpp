@@ -1,47 +1,40 @@
 #include <iostream>
 #include <vector>
-#include <stack>
-
+#include <deque>
 using namespace std;
 
-void dfs(vector<vector<int>>& g, vector<bool>& visited, int start, stack<int>& stk)
-{
-    if(visited[start]) return;
-    else {
-        visited[start] = true;
-        for(auto c:  g[start])
-        {
-            if(!visited[c]) dfs(g, visited, c, stk);
-        }
-        stk.push(start);
+vector<vector<int>> g;
+vector<bool> visited;
+deque<int> order;
+
+void dfs(int v) {
+  visited[v] = true;
+  for(auto c: g[v]) {
+    if(!visited[c]) {
+      dfs(c);
     }
+  }
+  order.push_front(v);
 }
 
-void top_sort(vector<vector<int>>& g)
-{
-    stack<int> stk;
-    vector<bool> visited(g.size(), false);
-    for(int i = 0; i < g.size(); ++i) {
-        if(!visited[i]) dfs(g, visited, i, stk);
+void sort() {
+  for(int i = 0; i < (int)g.size(); ++i) {
+    if(!visited[i]) {
+      dfs(i);
     }
-
-    while(!stk.empty()) {
-        cout << stk.top()+1 << " ";
-        stk.pop();
-    }
+  }
 }
 
-int main()
-{
-    int n, m; cin >> n >> m;
-    vector<vector<int>> g(n);
+int main() {
+  int n, m; cin >> n >> m;
+  g.assign(n, vector<int>());
+  visited.assign(n, false);
+  for(int i = 1; i <= m; ++i) {
+    int u, v; cin >> u >> v; /* --u; --v */;
+    g[u].push_back(v);
+  }
 
-    for(int i = 1; i <= m; ++i) {
-        int v, u; cin >> v >> u;
-        --v; --u;
-        g[v].push_back(u);
-    }
-
-    top_sort(g);
-    return 0;
+  sort();
+  for(auto e: order) cout << e << ' ';
+  return 0;
 }
