@@ -12,7 +12,7 @@ vector<int> d;
 bool negative_cycle(int s) {
   d[s] = 0;
   bool relaxed = false;
-  for(int i = 0; i < (int)g.size()-1; ++i) {
+  for(int i = 0; i < (int)g.size(); ++i) {
     relaxed = false;
     for(auto [u, v, c]: edge) {
       if(d[u] != numeric_limits<int>::max()) {
