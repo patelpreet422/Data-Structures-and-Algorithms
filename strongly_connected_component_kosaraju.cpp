@@ -1,116 +1,70 @@
 #include <iostream>
 #include <vector>
-#include <stack>
-#include <queue>
-#include <limits>
-#include <unordered_map>
-
+#include <deque>
+#include <cmath>
 using namespace std;
 
-stack<int> top_sort_(vector<vector<int>>& g) {
-    int n = g.size();
-    stack<int> frontier;
-    vector<bool> visited(g.size(), false);
-    stack<int> ordered;
+vector<vector<int>> g, rg;
+vector<bool> visited;
+deque<int> order;
 
-    for (auto i = 0; i < g.size(); ++i) {
-        if (!visited[i]) {
-            frontier.push(i);
-            visited[i] = true;
-
-            while (!frontier.empty()) {
-                int top = frontier.top();
-                frontier.pop();
-                if (top < 0) {
-                    ordered.push(-top-1);
-                } else {
-                    // before all the children are pushed onto the stack we push -top-1
-                    // to mark that when we see this node we are sure that all the children
-                    // of top are processed
-                    frontier.push(-top - 1);
-
-                    for (auto c: g[top]) {
-                        if (!visited[c]) {
-                            visited[c] = true;
-                            frontier.push(c);
-                        }
-                    }
-                }
-            }
-        }
+void dfs(int n, const vector<vector<int>>& adj) {
+  visited[n] = true;
+  for(auto c: adj[n]) {
+    if(!visited[c]) {
+      dfs(c,adj);
     }
-
-    return ordered;
+  }
+  order.push_front(n);
 }
 
-vector<vector<int>> reverse_edge(vector<vector<int>>& g)
-{
-    vector<vector<int>> res(g.size());
-    for(auto i = 0; i < g.size(); ++i)
-    {
-        for(auto e: g[i])
-            res[e].push_back(i);
+void sort(const vector<vector<int>>& adj) {
+  for(int i = 0; i < (int)adj.size(); ++i) {
+    if(!visited[i]) {
+      dfs(i,adj);
     }
-    return res;
+  }
 }
 
-void dfs(const vector<vector<int>>& g, int s, vector<int>& visited, unordered_map<int, vector<int>>& component, int c) {
-    stack<int> st;
-    st.push(s);
-    while(!st.empty()) {
-        int top = st.top();
-        st.pop();
-        visited[top] = true;
-        component[c].push_back(top);
-
-        for(auto child: g[top]) {
-            if(!visited[child]) {
-                visited[child] = true;
-                st.push(child);
-            }
-        }
+void dfs2(int n, const vector<vector<int>>& adj, vector<int> & comp) {
+  visited[n] = true;
+  comp.push_back(n);
+  for(auto e: adj[n]) {
+    if(!visited[e]) {
+      dfs2(e, adj, comp);
     }
+  }
 }
 
-void kosaraju(vector<vector<int>>& g) {
-    vector<vector<int>> rg = reverse_edge(g);
-    stack<int> ordered = top_sort_(rg);
+void kosaraju() {
+  sort(rg); // find top order from RG
+  // process G in top order of RG
+  visited.assign(g.size(), false);
+  vector<int> comp;
+  int scc = 0;
+  for(auto n: order) {
+    if(!visited[n]) {
+      dfs2(n, g, comp);
+      ++scc;
 
-    vector<int> visited(g.size(), false);
-    unordered_map<int, vector<int>> component;
-    // number of components
-    int c = 0;
-
-    while(!ordered.empty()) {
-        int top = ordered.top();
-        ordered.pop();
-        if(!visited[top]) {
-            
-            dfs(g, top, visited, component, c);
-            //cout << top << " ";
-            ++c;
-        }
+      cout << scc << ": ";
+      for(auto v: comp) cout << v << ' ';
+      cout << '\n';
+      comp.clear();
     }
-
-    for(auto&& p: component)
-    {
-        cout << p.first << ": ";
-        for(auto e: p.second) cout << e << " ";
-        cout << '\n';
-    }
-    
+  }
 }
 
-int main()
-{
-    int n, m; cin >> n >> m;
-    vector<vector<int>> g(n);
-
-    for(int i = 1; i <= m; ++i) {
-        int v, u; cin >> v >> u;
-        g[v].push_back(u);
-    }
-
-    kosaraju(g);
-    return 0;
+int main() {
+  int n, m; cin >> n >> m;
+  g.assign(n, vector<int>());
+  rg.assign(n, vector<int>());
+  visited.assign(n, false);
+  for(int i = 0; i < m; ++i) {
+    int v, u; cin >> v >> u; /* --v; --u; */
+    g[v].push_back(u);
+    rg[u].push_back(v);
+  }
+  kosaraju();
+  return 0;
 }
