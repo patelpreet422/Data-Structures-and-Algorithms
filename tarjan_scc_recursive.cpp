@@ -22,7 +22,7 @@ void dfs(int n) {
     while(true) {
       int t = s.top(); s.pop(); on_stack[t] = false;
       cout << t << ' ';
-      low[t] = low[n];
+      low[t] = id[n];
       if(t == n) {
         cout << '\n';
         break;
