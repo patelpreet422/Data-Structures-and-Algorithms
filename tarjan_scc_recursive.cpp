@@ -12,6 +12,7 @@ int c = 0;
 void dfs(int n) {
   s.push(n); visited[n] = on_stack[n] = true;
   low[n] = id[n] = c++;
+
   for(auto c: g[n]) {
     if(!visited[c]) dfs(c);
     if(on_stack[c]) low[n] = min(low[n], low[c]);
@@ -20,15 +21,22 @@ void dfs(int n) {
   if(id[n] == low[n]) {
     while(true) {
       int t = s.top(); s.pop(); on_stack[t] = false;
+      cout << t << ' ';
       low[t] = low[n];
-      if(t == n) break;
+      if(t == n) {
+        cout << '\n';
+        break;
+      }
     }
   }
 }
 
 void scc() {
   for(int i = 0; i < g.size(); ++i) {
-    if(!visited[i]) dfs(i);
+    if(!visited[i]) 
+    {
+      dfs(i);
+    }
   }
 }
 
@@ -46,10 +54,10 @@ int main() {
   }
 
   scc();
-
-  for(int i = 0; i < n; ++i) {
-    cout << "low[" << i << "]: " << low[i] << '\n';
-  }
-
+  //
+  // for(int i = 0; i < n; ++i) {
+  //   cout << "low[" << i << "]: " << low[i] << '\n';
+  // }
+  //
   return 0;
 }
