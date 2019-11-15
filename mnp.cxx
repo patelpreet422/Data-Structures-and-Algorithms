@@ -11,6 +11,11 @@
 using namespace std;
 
 namespace mnp {
+    template <typename Itr, typename T>
+    auto rank(Itr begin, Itr end, T k) -> size_t {
+        return std::lower_bound(begin, end, k) - begin;
+    }
+    
     template <typename InputItr1, typename InputItr2, typename OutputItr>
     void cross(InputItr1 i1begin, InputItr1 i1end, InputItr2 i2begin, InputItr2 i2end, OutputItr outputItr)
     {
