@@ -1,34 +1,30 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <cmath>
 using namespace std;
 
-// this lower bound return the result same as std::lower_bound but instead of pointers it returns tge index
-
-// this algorithm constructs the index at which the key is present starting from msb to lsb
-// it is also called meta binary search or one sided search 
-// I prefer to call it index constructive search because actually we are constructing the index at which the key is present smartly
-// rather than searching for the key itself
-int locate(vector<int>& A, int k)
-{
+int bsearch(vector<int> &vec, int k) {
   int p = 0;
-  int msb = ceil(log2(A.size()))-1;
-  while(msb>=0)
-  {
-    if(A[p] == k) return p;
-    int np = p | (1 << msb);
-    if(np < A.size() && A[np] <= k)
-      p = np;
-    --msb;
+
+  for (int i = log2(vec.size()); i >= 0; --i) {
+    if (vec[p] == k)
+      return p;
+    if ((p | (1 << i)) < vec.size() && vec[p | (1 << i)] <= k)
+      p |= (1 << i);
   }
-  return (A[p]==k)? p: ((k<A[0])?0:p+1);
+
+  return (vec[p] == k) ? p : ((k < vec[0]) ? 0 : p + 1);
 }
-int main()
-{
-  vector<int> vec{1, 5, 10, 15, 20, 25, 30, 35};
-  while(true){
-    int n; cin >> n;
-    cout << "lower_bound: " << locate(vec, n) << '\n';
-  }
+
+int main() {
+  vector<int> vec{12, -10, 75, 100};
+  sort(begin(vec), end(vec));
+  for (auto e : vec)
+    cout << e << ' ';
+  cout << '\n';
+  int a = -10;
+  cin >> a;
+  auto i = bsearch(vec, a);
+  cout << '\n' << a << " at: " << i << '\n';
   return 0;
 }
