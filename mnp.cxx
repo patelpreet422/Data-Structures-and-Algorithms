@@ -13,7 +13,7 @@ using namespace std;
 namespace mnp {
     template <typename Itr, typename T>
     auto rank(Itr begin, Itr end, T k) -> size_t {
-        return std::lower_bound(begin, end, k) - begin;
+        return std::distance(begin, std::lower_bound(begin, end, k)) + 1;
     }
     
     template <typename InputItr1, typename InputItr2, typename OutputItr>
