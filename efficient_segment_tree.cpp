@@ -47,7 +47,7 @@ int query(int l) {
 void modify(int l, int del) { // modify[l, l]
     l += n;
     tree[l] += del;
-    while(l > 1) {
+    while(l > 0) {
         tree[l>>1] = tree[l] + tree[l ^ 1];
         l >>= 1;
     }
