@@ -27,18 +27,19 @@ int inv(int a, int m) {
 
 int chinese(const vector<pair<int, int>> &vec) {
   int prod = accumulate(begin(vec), end(vec), 1,
-                        [](auto a, auto b) { return a * b.first; });
+                        [](auto a, auto b) { return a * b.second; });
 
   int s = 0;
   for (auto &&p : vec) {
-    int q = prod / p.first;
-    s += p.second * inv(q, p.first) * q;
+    int q = prod / p.second;
+    s += p.first * inv(q, p.second) * q;
+    cout << inv(q, p.second) << '\n';
   }
   return s % prod;
 }
 
 int main() {
-  vector<pair<int, int>> vec{{3, 2}, {5, 3}, {7, 2}};
+  vector<pair<int, int>> vec{{15, 27}, {16, 20}};
   cout << chinese(vec) << '\n';
   return 0;
 }
