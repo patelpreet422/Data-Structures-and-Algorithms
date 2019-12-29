@@ -21,7 +21,7 @@ uint64_t mod_exp_(uint64_t a, uint64_t b, uint64_t m)
     a = a%m;
     while(b > 0)
     {
-        if(b&1) r = (r * (a%m)) % m;
+        if(b&1) r = (r * a) % m;
         b >>= 1;
         a = a*a%m;
     }
