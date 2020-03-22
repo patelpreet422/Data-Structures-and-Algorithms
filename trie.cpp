@@ -1,101 +1,77 @@
 #include <iostream>
 #include <map>
-#include <vector>
-#include <iterator>
-
 using namespace std;
 
-struct tries {
-    map<char, tries> trie;
-    bool is_end = false;
+struct Trie {
+  map<char, Trie> children;
+  bool is_word = false;
 
-    template <typename It>
-    void insert(It b, It e) {
-        if(b == e) {
-            is_end = true;
-            return;
-        }
-        trie[*b].insert(next(b), e);
+  bool empty() {
+    return children.empty();
+  }
+
+  void insert(const string &s) { insert(s, 0); }
+
+  void insert(const string &s, int i) {
+    if (i == s.size()) {
+      is_word = true;
+      return;
     }
+    children[s[i]].insert(s, i + 1);
+  }
 
-    size_t size() { return trie.size(); }
+  void remove(const string &s) { remove(s, 0); }
 
-    void insert(const string& s) {
-        insert(begin(s), end(s));
+  void remove(const string &s, int i) {
+    if (i == s.size()) {
+      is_word = false;
+      return;
     }
-
-    void insert_all(initializer_list<string> s) {
-        for(auto&& str: s) insert(begin(str), end(str));
+    children[s[i]].remove(s, i + 1);
+    if (children[s[i]].empty() and !children[s[i]].is_word) {
+      children.erase(children.find(s[i]));
+      cout << "removing: " << s[i] << '\n';
     }
+  }
 
-    template <typename It>
-    void remove(It b, It e) {
-        if(b == e) {
-            is_end = false;
-        } else {
-            auto found = trie.find(*b);
-            if(found == trie.end()) return;
-            found->second.remove(next(b), e);
-        }
-    }
+  Trie next_suffixes(const string& s) { return next_suffixes(s, 0); }
 
-    void remove(const string& s) {
-        remove(begin(s), end(s));
+  Trie next_suffixes(const string& s, int i) {
+    if(i == s.size()) {
+      return *this;
     }
+    return children[s[i]].next_suffixes(s, i+1);
+  }
 
-    void print(string& s) {
-        if(is_end) {
-            cout << s << '\n';
-        }
-        for(auto&& p: trie) {
-            s += p.first;
-            p.second.print(s);
-            s.pop_back();
-        }
-    }
+  void print() {
+    string t;
+    print(t);
+  }
 
-    void print() {
-        string s = "";
-        print(s);
-    }
+  void print(string &s) {
+    if (is_word)
+      cout << s << '\n';
 
-    template <typename It>
-    bool contains(It b, It r) {
-        if(b == r) return is_end;
-        auto found = trie.find(*b);
-        if(found == trie.end()) return false;
-        return found->second.contains(next(b), r);
+    for (auto [c, n] : children) {
+      s.push_back(c);
+      n.print(s);
+      s.pop_back();
     }
-
-    bool contains(const string& s) {
-        return contains(begin(s), end(s));
-    }
-
-    template <typename It>
-    void predecessor(It b, It e) {
-        if(b == e) print();
-        else {
-            auto found = trie.find(*b);
-            if(found == trie.end()) return;
-            found->second.predecessor(next(b), e);
-        }
-    }
-
-    void predecessor(const string& s) {
-        predecessor(begin(s), end(s));
-    }
+  }
 };
 
 int main() {
-    tries trie;
-    trie.insert_all(
-            { "the", "a", "there",
-                "answer", "any", "by",
-                "bye", "their", "hero", "heroplane", "thes", "these"
-            });
-    cout << boolalpha << trie.contains("the") << '\n';
-    trie.remove("these");
-    cout << boolalpha << trie.contains("thes") << '\n';
-    cout << boolalpha << trie.contains("these") << '\n';
-    return 0;
+  Trie trie;
+  trie.insert("abfgh");
+  trie.insert("abfgi");
+  trie.insert("abc");
+  trie.insert("ab");
+  trie.insert("abdef");
+  trie.insert("abdefg");
+  trie.remove("abde");
+
+//  trie.next_suffixes("a").print();
+  trie.print();
+
+  return 0;
 }
