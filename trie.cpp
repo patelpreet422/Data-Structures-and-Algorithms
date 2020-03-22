@@ -27,6 +27,9 @@ struct Trie {
       is_word = false;
       return;
     }
+
+    if(children.find(s[i]) == children.end()) return;
+
     children[s[i]].remove(s, i + 1);
     if (children[s[i]].empty() and !children[s[i]].is_word) {
       children.erase(children.find(s[i]));
@@ -40,6 +43,9 @@ struct Trie {
     if(i == s.size()) {
       return *this;
     }
+
+    if(children.find(s[i]) == children.end()) return Trie();
+
     return children[s[i]].next_suffixes(s, i+1);
   }
 
@@ -62,15 +68,15 @@ struct Trie {
 
 int main() {
   Trie trie;
-  trie.insert("abfgh");
-  trie.insert("abfgi");
-  trie.insert("abc");
-  trie.insert("ab");
-  trie.insert("abdef");
-  trie.insert("abdefg");
-  trie.remove("abde");
+//  trie.insert("abfgh");
+//  trie.insert("abfgi");
+//  trie.insert("abc");
+//  trie.insert("ab");
+//  trie.insert("abdef");
+//  trie.insert("abdefg");
+  trie.remove("x");
 
-//  trie.next_suffixes("a").print();
+  trie.next_suffixes("x").print();
   trie.print();
 
   return 0;
