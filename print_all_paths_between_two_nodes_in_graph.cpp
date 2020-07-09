@@ -31,12 +31,14 @@ int main() {
   int n, m; cin >> n >> m;
   g.assign(n, vector<int>());
   being_visited.assign(n, false);
-  for(int i = 1; i <= m; ++i) {
-    int u, v; cin >> u >> v; --u; --v;
+  for(int i = 0; i < m; ++i) {
+    int u, v; cin >> u >> v;
     g[u].push_back(v);
   }
-
+  
   int v = 0, d = g.size()-1;
+  cout << "start and end vertices: "
+  cin >> v >> d;
   dfs(v, d);
 
   for(auto& r: paths) {
