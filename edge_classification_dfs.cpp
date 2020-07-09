@@ -20,21 +20,21 @@ void dfs(int n) {
   tin[n] = c++;
   state[n] = DISCOVERED;
 
-  for (auto c : g[n]) {
-    if (state[c] == NOT_DISCOVERED) {
-      dfs(c);
-      tree.push_back({n, c});
+  for (auto e : g[n]) {
+    if (state[e] == NOT_DISCOVERED) {
+      dfs(e);
+      tree.push_back({n, e});
     } else {
-      if (state[c] == PROCESSED && tin[n] < tin[c]) {
-        fwd.push_back({n, c});
+      if (state[e] == PROCESSED && tin[n] < tin[e]) {
+        fwd.push_back({n, e});
       }
 
-      if (state[c] == PROCESSED && tin[c] < tin[n]) {
-        cross.push_back({n, c});
+      if (state[e] == PROCESSED && tin[e] < tin[n]) {
+        cross.push_back({n, e});
       }
 
-      if (state[c] == DISCOVERED) {
-        back.push_back({n, c});
+      if (state[e] == DISCOVERED) {
+        back.push_back({n, e});
       }
     }
   }
