@@ -4,46 +4,47 @@
 #include <cmath>
 using namespace std;
 
+enum VertexState { NOT_DISCOVERED, DISCOVERED, PROCESSED };
+
 vector<vector<int>> g;
-vector<bool> visited;
-vector<bool> on_path;
-vector<int> tin, tout;
-vector<pair<int, int>> tree, back, fwd, cross;
+vector<VertexState> state;
+vector<int> tin;
 int c = 0;
 
-void dfs(int n, int p = -1) {
+vector<pair<int, int>> tree;
+vector<pair<int, int>> back;
+vector<pair<int, int>> fwd;
+vector<pair<int, int>> cross;
+
+void dfs(int n) {
   tin[n] = c++;
-  visited[n] = true;
-  on_path[n] = true;
-  for(auto c: g[n]) {
-    if(c == p) continue;
-    if(!visited[c]) {
-      tree.emplace_back(n, c);
-      dfs(c, n);
+  state[n] = DISCOVERED;
+
+  for (auto c : g[n]) {
+    if (state[c] == NOT_DISCOVERED) {
+      dfs(c);
+      tree.push_back({n, c});
     } else {
-      if(tin[n] < tin[c] and !on_path[c]) {
-        // forward edge <=> back edge
-        fwd.emplace_back(n, c);
+      if (state[c] == PROCESSED && tin[n] < tin[c]) {
+        fwd.push_back({n, c});
       }
 
-      if(tin[n] > tin[c] and !on_path[c]) {
-        // cross edge never occur in undirected graph
-        // they become tree edge
-        cross.emplace_back(n, c);
+      if (state[c] == PROCESSED && tin[c] < tin[n]) {
+        cross.push_back({n, c});
       }
 
-      if(tin[n] > tin[c] and on_path[c]) {
-        back.emplace_back(n, c);
+      if (state[c] == DISCOVERED) {
+        back.push_back({n, c});
       }
     }
   }
-  on_path[n] = false;
-  tout[n] = c++;
+
+  state[n] = PROCESSED;
 }
 
 void dfs() {
   for(int i = 0; i < (int)g.size(); ++i) {
-    if(!visited[i]) {
+    if (state[i] == NOT_DISCOVERED) {
       dfs(i);
     }
   }
@@ -52,12 +53,11 @@ void dfs() {
 int main() {
   int n, m; cin >> n >> m;
   g.assign(n, vector<int>());
-  visited.assign(n, false);
-  on_path.assign(n, false);
+  state.assign(n, NOT_DISCOVERED);
   tin.assign(n, 0);
-  tout.assign(n, 0);
   for(int i = 0; i < m; ++i) {
-    int v, u; cin >> v >> u; /* --v; --u; */
+    int v, u;
+    cin >> v >> u;
     g[v].push_back(u);
   }
 
