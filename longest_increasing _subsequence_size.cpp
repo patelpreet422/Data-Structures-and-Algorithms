@@ -1,32 +1,28 @@
-#include "iostream"
-#include "algorithm"
-#include "numeric"
-#include "vector"
-#include "list"
-#include "unordered_map"
-#include "iterator"
+#include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-int64_t lis_size(const vector<int64_t>& vec)
-{
-    // stores indices of candidate incresing subsequence
-    vector<int64_t> res(vec.size()+1, numeric_limits<int64_t>::max());
-    int64_t len = 0;
-    for(int64_t i = 0; i < vec.size(); ++i)
-    {
-        auto d = lower_bound(res.begin(), res.end(), vec[i]) - res.begin();
-        if(res[d] == numeric_limits<int64_t>::max()) ++len;
-        res[d] = vec[i];
-    }
+int lengthofLIS(const vector<int> &v) {
+  vector<int> lis;
 
-  return len;
+  for (auto e : v) {
+    // lower_bound return the position of the element that does not satisfy the
+    // predicate
+    auto ub = lower_bound(begin(lis), end(lis), e,
+                          [](auto a, auto b) { return a < b; }) - begin(lis);
+    if (ub == lis.size()) {
+      lis.push_back(e);
+    } else {
+      lis[ub] = e;
+    }
+  }
+  return lis.size();
 }
 
-int main()
-{
-    vector<int64_t> vec;
-    copy(istream_iterator<int>(cin), istream_iterator<int>{}, back_inserter(vec));
-    cout << lis_size(vec);
-    cout << '\n';
-    return 0;
+int main() {
+  vector<int> v{5, 15, 8, 7, 4, 10, 20, 19, 7, 25, 29, 12};
+  cout << lengthofLIS(v) << '\n';
+
+  return 0;
 }
