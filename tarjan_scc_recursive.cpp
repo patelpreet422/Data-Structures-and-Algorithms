@@ -1,63 +1,80 @@
+#include <algorithm>
 #include <iostream>
-#include <vector>
 #include <stack>
+#include <vector>
 using namespace std;
 
-vector<vector<int>> g;
-vector<bool> visited, on_stack;
-vector<int> id, low;
-stack<int> s;
+enum State { UNDISCOVERED, BEING_ASSIGNED_SCC, ASSIGNED_SCC };
+
 int c = 0;
+vector<vector<int>> g;
+vector<int> id, low;
+vector<State> state;
+stack<int> stk;
+vector<vector<int>> components;
 
-void dfs(int n) {
-  s.push(n); visited[n] = on_stack[n] = true;
-  low[n] = id[n] = c++;
+void dfs(int v) {
+  state[v] = BEING_ASSIGNED_SCC;
+  id[v] = low[v] = c++;
+  stk.push(v);
 
-  for(auto c: g[n]) {
-    if(!visited[c]) dfs(c);
-    if(on_stack[c]) low[n] = min(low[n], low[c]);
+  for (auto e : g[v]) {
+    if (state[e] == UNDISCOVERED) {
+      dfs(e);
+      low[v] = min(low[v], low[e]);
+    }
+
+    if (state[e] == BEING_ASSIGNED_SCC) {
+      low[v] = min(low[v], id[e]);
+    }
   }
 
-  if(id[n] == low[n]) {
-    while(true) {
-      int t = s.top(); s.pop(); on_stack[t] = false;
-      cout << t << ' ';
-      low[t] = id[n];
-      if(t == n) {
-        cout << '\n';
+  if (id[v] == low[v]) {
+    vector<int> comp;
+    while (true) {
+      int top = stk.top();
+      stk.pop();
+      state[top] = ASSIGNED_SCC;
+      comp.push_back(top);
+      if (top == v) {
         break;
       }
     }
+    components.push_back(comp);
   }
+
 }
 
 void scc() {
-  for(int i = 0; i < g.size(); ++i) {
-    if(!visited[i]) 
-    {
+  for (int i = 0; i < g.size(); ++i) {
+    if (state[i] == UNDISCOVERED) {
       dfs(i);
     }
   }
 }
 
 int main() {
-  int n, m; cin >> n >> m;
+  int n, m;
+  cin >> n >> m;
   g.assign(n, vector<int>());
-  visited.assign(n, false);
-  on_stack.assign(n, false);
+  low.assign(n, -1);
   id.assign(n, -1);
-  low.assign(n ,-1);
+  state.assign(n, UNDISCOVERED);
 
-  for(int i = 0; i < m; ++i) {
-    int v, u; cin >> v >> u;
-    g[v].push_back(u);
+  for (int i = 0; i < m; ++i) {
+    int a, b;
+    cin >> a >> b;
+    g[a].push_back(b);
   }
 
   scc();
-  //
-  // for(int i = 0; i < n; ++i) {
-  //   cout << "low[" << i << "]: " << low[i] << '\n';
-  // }
-  //
+
+  for (auto &comp : components) {
+    for (auto e : comp) {
+      cout << e << ", ";
+    }
+    cout << '\n';
+  }
+
   return 0;
 }
