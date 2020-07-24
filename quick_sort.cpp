@@ -1,34 +1,38 @@
-#include <iostream>
 #include <algorithm>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int partition(int *array, int low, int high) {
-	int pivot = array[(low + high) / 2];
-	while (low <= high) {
-		while (array[low] < pivot) ++low;
-		while (array[high] > pivot) --high;
-		if (low <= high) swap(array[low++], array[high--]);
-	}
-	return low;
+// partition returns the index at which the pivot must be placed
+int partition(vector<int> &v, int l, int h) {
+  int ll = l;
+  int pivot = v[h];
+  for (int k = l; k < h; ++k) {
+    if (v[k] <= pivot) {
+      swap(v[k], v[ll++]);
+    }
+  }
+  swap(v[ll], v[h]);
+  return ll;
 }
-void quickSortHelper(int *array, int low, int high) {
-	if (low >= high) return;
-	int partitionPoint = partition(array, low, high);
-	quickSortHelper(array, low, partitionPoint - 1);
-	quickSortHelper(array, partitionPoint, high);
+
+void quick_sort(vector<int>& v, int l, int h) {
+  if (l > h)
+    return;
+  int p = partition(v, l, h);
+  quick_sort(v, l, p - 1);
+  quick_sort(v, p + 1, h);
 }
-void quickSort(int *array, int size) {
-	quickSortHelper(array, 0, size - 1);
-}
-int main()
-{
-	int size = 10;
-	int *array = new int[size];
-	for (int i = 0; i < size; ++i) {
-		array[i] = rand() % 10 + 1;
-	}
-	quickSort(array, size);
-	for_each(array, array + size, [](const auto &e) {cout << e << ' '; });
-	delete[] array;
-	return 0;
+
+int main() {
+  vector<int> v{1, 2};
+  do {
+    vector<int> t = v;
+    quick_sort(t, 0, t.size() - 1);
+    for (auto e : t) {
+      cout << e << ' ';
+    }
+    cout << '\n';
+  } while (next_permutation(begin(v), end(v)));
+  return 0;
 }
