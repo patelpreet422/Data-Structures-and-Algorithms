@@ -18,19 +18,21 @@ int partition(vector<int> &v, int l, int h) {
 }
 
 int quick_select(vector<int> &v, int l, int h, int k) {
-  if (l > h)
-    return -1;
-  int p = partition(v, l, h);
-  if (k == p)
-    return p;
-  if (k < p)
-    return quick_select(v, l, p - 1, k);
-
-  return quick_select(v, p + 1, h, k);
+  while (l <= h) {
+    int p = partition(v, l, h);
+    if (k == p)
+      return p;
+    if (k < p) {
+      h = p - 1;
+    } else {
+      l = p + 1;
+    }
+  }
+  return -1;
 }
 
 int main() {
-  vector<int> v{1, 2, 3, 4, 5};
+  vector<int> v{1};
   do {
     auto t = v;
     /* cout << "vec: "; */
