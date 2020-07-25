@@ -6,9 +6,7 @@ struct Trie {
   map<char, Trie> children;
   bool is_word = false;
 
-  bool empty() {
-    return children.empty();
-  }
+  bool empty() { return children.empty(); }
 
   void insert(const string &s) { insert(s, 0); }
 
@@ -28,7 +26,8 @@ struct Trie {
       return;
     }
 
-    if(children.find(s[i]) == children.end()) return;
+    if (children.find(s[i]) == children.end())
+      return;
 
     children[s[i]].remove(s, i + 1);
     if (children[s[i]].empty() and !children[s[i]].is_word) {
@@ -37,16 +36,17 @@ struct Trie {
     }
   }
 
-  Trie next_suffixes(const string& s) { return next_suffixes(s, 0); }
+  Trie next_suffixes(const string &s) { return next_suffixes(s, 0); }
 
-  Trie next_suffixes(const string& s, int i) {
-    if(i == s.size()) {
+  Trie next_suffixes(const string &s, int i) {
+    if (i == s.size()) {
       return *this;
     }
 
-    if(children.find(s[i]) == children.end()) return Trie();
+    if (children.find(s[i]) == children.end())
+      return Trie();
 
-    return children[s[i]].next_suffixes(s, i+1);
+    return children[s[i]].next_suffixes(s, i + 1);
   }
 
   void print() {
@@ -68,12 +68,12 @@ struct Trie {
 
 int main() {
   Trie trie;
-//  trie.insert("abfgh");
-//  trie.insert("abfgi");
-//  trie.insert("abc");
-//  trie.insert("ab");
-//  trie.insert("abdef");
-//  trie.insert("abdefg");
+  //  trie.insert("abfgh");
+  //  trie.insert("abfgi");
+  //  trie.insert("abc");
+  //  trie.insert("ab");
+  //  trie.insert("abdef");
+  //  trie.insert("abdefg");
   trie.remove("x");
 
   trie.next_suffixes("x").print();

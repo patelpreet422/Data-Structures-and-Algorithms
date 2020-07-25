@@ -1,7 +1,7 @@
+#include <cmath>
+#include <deque>
 #include <iostream>
 #include <vector>
-#include <deque>
-#include <cmath>
 using namespace std;
 
 enum VertexState { NOT_DISCOVERED, DISCOVERED, PROCESSED };
@@ -43,7 +43,7 @@ void dfs(int n) {
 }
 
 void dfs() {
-  for(int i = 0; i < (int)g.size(); ++i) {
+  for (int i = 0; i < (int)g.size(); ++i) {
     if (state[i] == NOT_DISCOVERED) {
       dfs(i);
     }
@@ -51,32 +51,37 @@ void dfs() {
 }
 
 int main() {
-  int n, m; cin >> n >> m;
+  int n, m;
+  cin >> n >> m;
   g.assign(n, vector<int>());
   state.assign(n, NOT_DISCOVERED);
   tin.assign(n, 0);
-  for(int i = 0; i < m; ++i) {
+  for (int i = 0; i < m; ++i) {
     int v, u;
     cin >> v >> u;
     g[v].push_back(u);
   }
 
   dfs();
-  
+
   cout << "tree edge: ";
-  for(auto [a, b]: tree) cout << "(" << a << ", " << b << ") ";
+  for (auto [a, b] : tree)
+    cout << "(" << a << ", " << b << ") ";
   cout << '\n';
 
   cout << "back edge: ";
-  for(auto [a, b]: back) cout << "(" << a << ", " << b << ") ";
+  for (auto [a, b] : back)
+    cout << "(" << a << ", " << b << ") ";
   cout << '\n';
 
   cout << "forward edge: ";
-  for(auto [a, b]: fwd) cout << "(" << a << ", " << b << ") ";
+  for (auto [a, b] : fwd)
+    cout << "(" << a << ", " << b << ") ";
   cout << '\n';
 
   cout << "cross edge: ";
-  for(auto [a, b]: cross) cout << "(" << a << ", " << b << ") ";
+  for (auto [a, b] : cross)
+    cout << "(" << a << ", " << b << ") ";
   cout << '\n';
   return 0;
 }

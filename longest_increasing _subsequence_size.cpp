@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 int lengthofLIS(const vector<int> &v) {
@@ -10,7 +10,8 @@ int lengthofLIS(const vector<int> &v) {
     // lower_bound return the position of the element that does not satisfy the
     // predicate
     auto ub = lower_bound(begin(lis), end(lis), e,
-                          [](auto a, auto b) { return a < b; }) - begin(lis);
+                          [](auto a, auto b) { return a < b; }) -
+              begin(lis);
     if (ub == lis.size()) {
       lis.push_back(e);
     } else {

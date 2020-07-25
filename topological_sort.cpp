@@ -1,6 +1,6 @@
+#include <deque>
 #include <iostream>
 #include <vector>
-#include <deque>
 using namespace std;
 
 vector<vector<int>> g;
@@ -9,8 +9,8 @@ deque<int> order;
 
 void dfs(int v) {
   visited[v] = true;
-  for(auto c: g[v]) {
-    if(!visited[c]) {
+  for (auto c : g[v]) {
+    if (!visited[c]) {
       dfs(c);
     }
   }
@@ -18,23 +18,27 @@ void dfs(int v) {
 }
 
 void sort() {
-  for(int i = 0; i < (int)g.size(); ++i) {
-    if(!visited[i]) {
+  for (int i = 0; i < (int)g.size(); ++i) {
+    if (!visited[i]) {
       dfs(i);
     }
   }
 }
 
 int main() {
-  int n, m; cin >> n >> m;
+  int n, m;
+  cin >> n >> m;
   g.assign(n, vector<int>());
   visited.assign(n, false);
-  for(int i = 1; i <= m; ++i) {
-    int u, v; cin >> u >> v; /* --u; --v */;
+  for (int i = 1; i <= m; ++i) {
+    int u, v;
+    cin >> u >> v; /* --u; --v */
+    ;
     g[u].push_back(v);
   }
 
   sort();
-  for(auto e: order) cout << e << ' ';
+  for (auto e : order)
+    cout << e << ' ';
   return 0;
 }

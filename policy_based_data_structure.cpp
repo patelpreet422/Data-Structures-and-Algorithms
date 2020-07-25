@@ -7,10 +7,13 @@ using namespace std;
 
 using namespace __gnu_pbds;
 
-using prefix_trie = __gnu_pbds::trie<string, null_type, trie_string_access_traits<>, pat_trie_tag, trie_prefix_search_node_update>;
+using prefix_trie =
+    __gnu_pbds::trie<string, null_type, trie_string_access_traits<>,
+                     pat_trie_tag, trie_prefix_search_node_update>;
 
 template <typename T>
-using indexed_set = __gnu_pbds::tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+using indexed_set = __gnu_pbds::tree<T, null_type, less<T>, rb_tree_tag,
+                                     tree_order_statistics_node_update>;
 
 template <typename T>
 using binomial_heap = __gnu_pbds::priority_queue<T, less<T>, binomial_heap_tag>;
@@ -19,7 +22,8 @@ template <typename T>
 using binary_heap = __gnu_pbds::priority_queue<T, less<T>, binary_heap_tag>;
 
 template <typename T>
-using rc_binomial_heap = __gnu_pbds::priority_queue<T, less<T>, rc_binomial_heap_tag>;
+using rc_binomial_heap =
+    __gnu_pbds::priority_queue<T, less<T>, rc_binomial_heap_tag>;
 
 template <typename T>
 using pairing_heap = __gnu_pbds::priority_queue<T, less<T>, pairing_heap_tag>;
@@ -30,7 +34,7 @@ using thin_heap = __gnu_pbds::priority_queue<T, less<T>, thin_heap_tag>;
 int main() {
   prefix_trie pt;
   pt.insert("hello");
-  for(auto [b, e] = pt.prefix_range("hel"); b != e; ++b) {
+  for (auto [b, e] = pt.prefix_range("hel"); b != e; ++b) {
     cout << *b << '\n';
   }
   return 0;
@@ -45,15 +49,18 @@ int main() {
  *
  * Erase methods
  * -------------
- * -> Range erase is not supported in both (order preserving and non-order preserving) pb_ds
+ * -> Range erase is not supported in both (order preserving and non-order
+ * preserving) pb_ds
  * -> Ordering preserving pb_ds have erase method
  * -> Hash based pb_ds do not have erase method
  * -> All pb_ds have erase_if
- * -> For range erase in tree based pb_ds go for split method of tree based pb_ds
+ * -> For range erase in tree based pb_ds go for split method of tree based
+ * pb_ds
  *
  * Insert methods
  * --------------
- * -> For range insert in tree based pb_ds go for join method of tree based pb_ds
+ * -> For range insert in tree based pb_ds go for join method of tree based
+ * pb_ds
  * -> Range insert is not supported by any other pb_ds
  *
  * Comparison methods
@@ -89,7 +96,6 @@ int main() {
  * -> pb_ds supports iterators
  *
  */
-
 
 /*
  * Hash based containers

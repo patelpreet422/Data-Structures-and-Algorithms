@@ -13,7 +13,7 @@ void permute(const string &s, string chosen) {
   for (int i = 0; i < s.size(); ++i) {
     if (pick[i])
       continue;
-    
+
     pick[i] = true;
 
     permute(s, chosen + s[i]);
@@ -22,7 +22,7 @@ void permute(const string &s, string chosen) {
   }
 }
 
-void permute(const string& s) {
+void permute(const string &s) {
   pick.assign(s.size(), false);
   permute(s, "");
 }

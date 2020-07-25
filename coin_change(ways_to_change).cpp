@@ -19,19 +19,21 @@ int change(vector<int>& coins, int target, int k)
 }
 */
 
-int change(vector<int>& coins, int target, int i)
-{
-    if(i >= coins.size()) return 0;
-    if(target == 0) return 1;
-    if(target < 0) return 0;
-    return change(coins, target-coins[i], i) + change(coins, target, i+1);
+int change(vector<int> &coins, int target, int i) {
+  if (i >= coins.size())
+    return 0;
+  if (target == 0)
+    return 1;
+  if (target < 0)
+    return 0;
+  return change(coins, target - coins[i], i) + change(coins, target, i + 1);
 }
 
 int main() {
-    vector coins{1, 2, 3};
-    string chosen = "";
-    int ans = change(coins, 4, 0);
+  vector coins{1, 2, 3};
+  string chosen = "";
+  int ans = change(coins, 4, 0);
 
-    cout << ans << '\n';
-    return 0;
+  cout << ans << '\n';
+  return 0;
 }

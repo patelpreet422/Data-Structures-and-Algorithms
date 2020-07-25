@@ -1,11 +1,10 @@
-#include <iostream>
+#include <algorithm>
 #include <fstream>
+#include <iostream>
 #include <iterator>
 #include <set>
-#include <algorithm>
 using namespace std;
-int main()
-{
+int main() {
   ifstream fin("test.txt");
   istream_iterator<string> ii(fin);
   istream_iterator<string> eos;

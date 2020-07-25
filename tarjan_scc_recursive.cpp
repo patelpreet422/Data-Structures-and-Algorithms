@@ -42,7 +42,6 @@ void dfs(int v) {
     }
     components.push_back(comp);
   }
-
 }
 
 void scc() {

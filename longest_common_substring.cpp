@@ -4,7 +4,7 @@ using namespace std;
 
 class Solution {
 public:
-  string a; 
+  string a;
   string b;
   int lcs(int i, int j, int l, int &s) {
     if (i == -1 or j == -1) {

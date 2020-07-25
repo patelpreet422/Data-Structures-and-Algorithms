@@ -1,6 +1,6 @@
+#include <deque>
 #include <iostream>
 #include <vector>
-#include <deque>
 using namespace std;
 
 vector<vector<int>> g;
@@ -13,21 +13,21 @@ void dfs(int v) {
   being_visited[v] = true;
   path.push_back(v);
 
-  for(auto c: g[v]) {
-    if(!being_visited[c]) {
+  for (auto c : g[v]) {
+    if (!being_visited[c]) {
       dfs(c);
     }
   }
 
   bool all = true;
-  for(auto c: g[v]) {
-    if(!being_visited[c]) {
+  for (auto c : g[v]) {
+    if (!being_visited[c]) {
       all = false;
       break;
     }
   }
 
-  if(all)
+  if (all)
     paths.push_back(vector<int>(begin(path), end(path)));
 
   being_visited[v] = false;
@@ -35,20 +35,23 @@ void dfs(int v) {
 }
 
 int main() {
-  int n, m; cin >> n >> m;
+  int n, m;
+  cin >> n >> m;
   g.assign(n, vector<int>());
   being_visited.assign(n, false);
-  for(int i = 1; i <= m; ++i) {
-    int u, v; cin >> u >> v; /*--u; --v; */
+  for (int i = 1; i <= m; ++i) {
+    int u, v;
+    cin >> u >> v; /*--u; --v; */
     g[u].push_back(v);
-//    g[v].push_back(u);
+    //    g[v].push_back(u);
   }
 
   int v = 0;
   dfs(v);
 
-  for(auto& r: paths) {
-    for(auto e: r) cout << e << ' ';
+  for (auto &r : paths) {
+    for (auto e : r)
+      cout << e << ' ';
     cout << '\n';
   }
 

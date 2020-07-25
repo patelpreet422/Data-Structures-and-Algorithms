@@ -25,7 +25,7 @@ int64_t inversion(vector<int64_t> &a) {
 
   vector<int64_t> b = a;
   sort(begin(b), end(b));
-    
+
   // convert a to compressed version maint64_taining the relative order of
   // elements in the original array
   // use coordinate compression to reduce the size of the fenwick tree
@@ -46,6 +46,7 @@ int64_t inversion(vector<int64_t> &a) {
 int main() {
   vector<int64_t> a;
   copy(istream_iterator<int64_t>(cin), istream_iterator<int64_t>(),
-  back_inserter(a)); cout << inversion(a) << '\n';
+       back_inserter(a));
+  cout << inversion(a) << '\n';
   return 0;
 }

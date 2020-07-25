@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int n; 
+int n;
 vector<vector<int>> g;
 vector<int> d;
 

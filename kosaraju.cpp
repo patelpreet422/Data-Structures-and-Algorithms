@@ -1,8 +1,8 @@
-#include <iostream>
-#include <vector>
 #include <deque>
-#include <unordered_map>
+#include <iostream>
 #include <map>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
 vector<vector<int>> g;
@@ -13,8 +13,8 @@ unordered_map<int, vector<int>> component;
 deque<int> condensed_top_order;
 
 void reverse() {
-  for(int i = 0; i < (int)g.size(); ++i) {
-    for(auto e: g[i]) {
+  for (int i = 0; i < (int)g.size(); ++i) {
+    for (auto e : g[i]) {
       rg[e].push_back(i);
     }
   }
@@ -22,16 +22,16 @@ void reverse() {
 
 void dfs(int v) {
   visited[v] = true;
-  for(auto c: rg[v]) {
-    if(!visited[c])
+  for (auto c : rg[v]) {
+    if (!visited[c])
       dfs(c);
   }
   order.push_front(v);
 }
 
 void sort() {
-  for(int i = 0; i < (int)g.size(); ++i) {
-    if(!visited[i]) {
+  for (int i = 0; i < (int)g.size(); ++i) {
+    if (!visited[i]) {
       dfs(i);
     }
   }
@@ -40,8 +40,8 @@ void sort() {
 void dfs(int v, int c) {
   component[c].push_back(v);
   visited[v] = true;
-  for(auto e: g[v]) {
-    if(!visited[e]) {
+  for (auto e : g[v]) {
+    if (!visited[e]) {
       dfs(e, c);
     }
   }
@@ -51,8 +51,8 @@ void kosaraju() {
   int c = 0;
   visited.assign(g.size(), false);
 
-  for(auto e: order) {
-    if(!visited[e]) {
+  for (auto e : order) {
+    if (!visited[e]) {
       condensed_top_order.push_front(e);
       ++c;
       dfs(e, c);
@@ -61,12 +61,14 @@ void kosaraju() {
 }
 
 int main() {
-  int n, m; cin >> n >> m;
+  int n, m;
+  cin >> n >> m;
   g.assign(n, vector<int>());
   rg.assign(n, vector<int>());
   visited.assign(n, false);
-  for(int i = 1; i <= m; ++i) {
-    int u, v; cin >> u >> v; /* --u; --v; */
+  for (int i = 1; i <= m; ++i) {
+    int u, v;
+    cin >> u >> v; /* --u; --v; */
     g[u].push_back(v);
   }
 
@@ -74,15 +76,16 @@ int main() {
   sort();
   kosaraju();
 
-  for(auto&& p: component)
-  {
+  for (auto &&p : component) {
     cout << p.first << ": ";
-    for(auto e: p.second) cout << e << " ";
+    for (auto e : p.second)
+      cout << e << " ";
     cout << '\n';
   }
 
   cout << "condensed top order: ";
-  for(auto e: condensed_top_order) cout << e << ' ';
+  for (auto e : condensed_top_order)
+    cout << e << ' ';
 
   return 0;
 }

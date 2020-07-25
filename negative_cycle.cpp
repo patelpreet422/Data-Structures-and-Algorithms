@@ -1,8 +1,8 @@
-#include <iostream>
-#include <vector>
-#include <tuple>
-#include <deque>
 #include <cmath>
+#include <deque>
+#include <iostream>
+#include <tuple>
+#include <vector>
 using namespace std;
 
 vector<vector<int>> g;
@@ -12,12 +12,12 @@ vector<int> d;
 bool negative_cycle(int s) {
   d[s] = 0;
   bool relaxed = false;
-  for(int i = 0; i < (int)g.size(); ++i) {
+  for (int i = 0; i < (int)g.size(); ++i) {
     relaxed = false;
-    for(auto [u, v, c]: edge) {
-      if(d[u] != numeric_limits<int>::max()) {
-        if(d[v] > d[u]+c) {
-          d[v] = d[u]+c;
+    for (auto [u, v, c] : edge) {
+      if (d[u] != numeric_limits<int>::max()) {
+        if (d[v] > d[u] + c) {
+          d[v] = d[u] + c;
           relaxed = true;
         }
       }
@@ -27,11 +27,13 @@ bool negative_cycle(int s) {
 }
 
 int main() {
-  int n, m; cin >> n >> m;
+  int n, m;
+  cin >> n >> m;
   g.assign(n, vector<int>());
   d.assign(n, numeric_limits<int>::max());
-  for(int i = 0; i < m; ++i) {
-    int u, v, w; cin >> u >> v >> w; /* --v; --u; */
+  for (int i = 0; i < m; ++i) {
+    int u, v, w;
+    cin >> u >> v >> w; /* --v; --u; */
 
     g[u].push_back(v);
     edge.push_back({u, v, w});

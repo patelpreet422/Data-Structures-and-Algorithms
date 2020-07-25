@@ -75,7 +75,7 @@ int main() {
   low.assign(n, -1);
   id.assign(n, -1);
 
-  for(int i = 0; i < m; ++i) {
+  for (int i = 0; i < m; ++i) {
     int v, u;
     cin >> v >> u;
     g[v].push_back(u);

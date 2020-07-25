@@ -16,7 +16,7 @@ int partition(vector<int> &v, int l, int h) {
   return ll;
 }
 
-void quick_sort(vector<int>& v, int l, int h) {
+void quick_sort(vector<int> &v, int l, int h) {
   if (l > h)
     return;
   int p = partition(v, l, h);
