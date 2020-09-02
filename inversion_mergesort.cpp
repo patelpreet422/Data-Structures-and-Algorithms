@@ -1,70 +1,65 @@
-#include <algorithm>
-#include <iostream>
-#include <iterator>
-#include <numeric>
-#include <unordered_map>
-#include <vector>
+#ifdef DEBUG
+#include <LeetcodeHelper.h>
+#include <prettyprint.hpp>
+#endif
+#include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 
-int64_t mergesort_inversion(vector<int> &vec, int64_t p, int64_t q) {
-  if (p >= q)
-    return 0;
-  int mid = (p + q) / 2;
-
-  // recurse on left half
-  auto a = mergesort_inversion(vec, p, mid);
-
-  // recurse on right half
-  auto b = mergesort_inversion(vec, mid + 1, q);
-
-  // temp stores the sorted array
-  vector<int> temp(q - p + 1);
-  int64_t l = 0, i = p, m = mid + 1, c = 0;
-
-  // len(left half) = mid - p + 1
-  // len(right half) = q - mid;
-  while (i <= mid && m <= q) {
-    if (vec[i] <= vec[m]) {
-      temp[l++] = vec[i];
-      ++i;
+ll merge(vector<int> &v, int l, int m, int h) {
+  ll c = 0;
+  vector<int> temp(h - l + 1, 0);
+  int t = 0;
+  int ll = l, lh = m, li = l;
+  int rl = m + 1, rh = h, ri = m + 1;
+  while (li <= lh and ri <= rh) {
+    if (v[li] <= v[ri]) {
+      temp[t++] = v[li++];
     } else {
-      temp[l++] = vec[m];
-      ++m;
-      //            c += ((mid - p + 1) - i);
-      //          c += (remaining elements in left half)
-      c += (mid - i + 1);
+      c += (lh - li + 1);
+      temp[t++] = v[ri++];
     }
   }
 
-  // copy left half
-  while (i <= mid)
-    temp[l++] = vec[i++];
-
-  // copy right half
-  while (m <= q)
-    temp[l++] = vec[m++];
-
-  // copy sorted array to vec
-  l = 0;
-  while (p <= q) {
-    vec[p++] = temp[l++];
+  while (li <= lh) {
+    temp[t++] = v[li++];
   }
 
-  c += a + b;
+  while (ri <= rh) {
+    temp[t++] = v[ri++];
+  }
+
+  for (int i = 0; i < temp.size(); ++i) {
+    v[i + l] = temp[i];
+  }
   return c;
 }
 
+ll inversion(vector<int> &v, int l, int h) {
+  if (l >= h) {
+    return 0;
+  }
+  int m = l + (h - l) / 2;
+  ll li = inversion(v, l, m);
+  ll ri = inversion(v, m + 1, h);
+  ll ci = merge(v, l, m, h);
+  return li + ri + ci;
+}
+
+ll inversion(vector<int> &v) { return inversion(v, 0, v.size() - 1); }
+
 int main() {
-  int64_t t;
+  int t;
   cin >> t;
   while (t--) {
-    int64_t n;
+    int n;
     cin >> n;
-    vector<int> vec(n);
-    for (auto &e : vec)
+    vector<int> v(n);
+    for (auto &e : v) {
       cin >> e;
-
-    cout << mergesort_inversion(vec, 0, vec.size() - 1) << '\n';
+    }
+    cout << inversion(v) << '\n';
   }
   return 0;
 }
+
