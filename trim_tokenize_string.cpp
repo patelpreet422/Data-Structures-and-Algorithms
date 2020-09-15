@@ -5,6 +5,7 @@
 #include <climits>
 #include <algorithm>
 #include <cmath>
+#include <vector>
 using ll = long long;
 using namespace std;
 
@@ -26,13 +27,42 @@ void trim_right(string& s) {
     s.erase(i+1);
 }
 
-int main() {
-    string s = "hello | this | is | columns";
-    stringstream ss(s);
-    while(getline(ss, s, '|')) {
-        trim_left(s);
-        trim_right(s);
-        cout << "\"" << s << "\"\n";
+void trim(string& s) {
+    trim_left(s);
+    trim_right(s);
+}
+
+// NOTE: This is just very basic implementation and use it by making proper modification if needed
+template <typename Func>
+vector<string> split(const string& s, Func predicate) {
+    vector<string> tokens;
+    string token = "";
+    for(auto c: s) {
+        if(predicate(c)) {
+            trim(token);
+            if(!token.empty()) {
+                tokens.push_back(token);
+                token = "";
+            }
+        }  else {
+            token.push_back(c);
+        }
     }
+    trim(token);
+    if(!token.empty()) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
+int main() {
+    string table = "\\
+        hello, bob, this , my, name,,,,,     kfkkajkfdk markey, \\
+        hjfhjaf ,   \t\t \v, jkjk, nj, \\
+    ";
+    for(auto s: split(table, [](char c) {return c == ',';})) {
+        cout << "\"" << s << "\"" << ' ';
+    }
+    cout << '\n';
     return 0;
 }
