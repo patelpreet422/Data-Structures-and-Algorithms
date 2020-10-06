@@ -1,79 +1,52 @@
-#include <iostream>
-#include <limits>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-void printBrace(vector<vector<int>> &S, int i, int j, char &c) {
+/*
+https://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/Dynamic/chainMatrixMult.htm
+*/
+
+void printBrace(vector<vector<int>> &parent, int i, int j, char &c) {
   if (i == j) {
     cout << c;
     ++c;
   } else {
     cout << "(";
-    printBrace(S, i, S[i][j], c);
-    printBrace(S, S[i][j] + 1, j, c);
+    int k = parent[i][j];
+    printBrace(parent, i, k, c);
+    printBrace(parent, k + 1, j, c);
     cout << ")";
   }
 }
 
-int mcm(vector<int> dims) {
-  /*
-   * Dimension of matrix A[i] = dims[i] x dims[i+1]
-   */
+int solve(const vector<int> &v) {
+  int n = v.size() - 1;
 
-  int n = dims.size() - 1;
-  vector<vector<int>> M(n, vector<int>(n));
-  vector<vector<int>> S(n, vector<int>(n, 0));
+  vector<vector<int>> dp(n, vector<int>(n, 0));
+  vector<vector<int>> parent(n, vector<int>(n, 0));
 
-  for (int i = 0; i < n; ++i)
-    M[i][i] = 0;
+  for (int g = 1; g < n; ++g) {
+    for (int i = 0, j = g; j < n; ++i, ++j) {
+      dp[i][j] = INT_MAX;
+      for (int k = i; k < j; ++k) {
 
-  for (int d = 1; d < n; ++d) {
-    for (int i = 0; i < n - d; ++i) {
-      int col = i + d;
-      cout << "[" << i << ", " << col << "]\n";
-      M[i][col] = numeric_limits<int>::max();
-      for (int k = i; k < col; ++k) {
-        /*
-         * k is intermidiate matrix
-         * So, if we multiply i-th matrix
-         * with k-th intermidiate matrix
-         * and j-th matrix
-         *
-         * total cost = dim[i]*dim[k+1]*dim[j+1];
-         */
-
-        cout << "\t(" << i << ", " << k << ") + (" << k + 1 << ", " << col
-             << ")";
-
-        if (M[i][k] + M[k + 1][col] + dims[i] * dims[k + 1] * dims[col + 1] <
-            M[i][col]) {
-          M[i][col] =
-              M[i][k] + M[k + 1][col] + dims[i] * dims[k + 1] * dims[col + 1];
-
-          // Since we come here means that A[k] is the slicing point so we store
-          // this point
-          S[i][col] = k;
+        if (dp[i][j] > dp[i][k] + dp[k + 1][j] + v[i] * v[k + 1] * v[j + 1]) {
+          dp[i][j] = dp[i][k] + dp[k + 1][j] + v[i] * v[k + 1] * v[j + 1];
+          parent[i][j] = k;
         }
-        // M[i][col] = min(M[i][col], M[i][k] + M[k+1][col] +
-        // dims[i]*dims[k+1]*dims[col+1]);
-        cout << " + dim[" << i << "]*"
-             << "dim[" << k + 1 << "]*"
-             << "dim[" << col + 1 << "]\n";
       }
-      cout << "\n";
     }
   }
 
   char c = 'A';
-  printBrace(S, 0, n - 1, c);
+  printBrace(parent, 0, n - 1, c);
   cout << "\n";
 
-  return M[0][n - 1];
+  return dp[0][n - 1];
 }
 
 int main() {
-  vector<int> dims{5, 4, 6, 2, 7};
-  cout << mcm(dims) << "\n";
+  vector<int> v{10, 20, 30, 40, 30};
+  cout << solve(v) << '\n';
   return 0;
 }
