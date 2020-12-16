@@ -98,68 +98,75 @@ int main() {
  */
 
 /*
- * Hash based containers
- * =====================
- * 1. basic_hash_table (abstract class)
- * 2. cc_hash_table (collision chaining)
- * 3. gp_hash_table (general probing)
+ * .------------------------------------------------------------------------.
+ * | These are the classes that you templatise to get the working container |
+ * '------------------------------------------------------------------------'
+ *      Hash based containers
+ *      =====================
+ *          1. basic_hash_table (abstract class)
+ *          2. cc_hash_table (collision chaining)
+ *          3. gp_hash_table (general probing)
  *
- * Tree based containers
- * ====================
- * 1. basic_tree (abstract class)
- * 2. tree
- * 3. trie
+ *      Tree based containers
+ *      ====================
+ *          1. basic_tree (abstract class)
+ *          2. tree
+ *          3. trie
  *
- * List based container
- * ====================
- * 1. list_update (singly list with update policy)
+ *      List based container
+ *      ====================
+ *          1. list_update (singly list with update policy, depending on the 
+               update policy move elements to front)
  *
- * Priority queue
- * ==============
- * 1. priority_queue
+ *      Priority queue
+ *      ==============
+ *          1. priority_queue
  *
+ * .---------------------------------------------------------------------------------------------------------.
+ * | These are the backing data structure (aka Container tags) that are used when templatising the container |
+ * '---------------------------------------------------------------------------------------------------------'
+ *      associaive_container_tag (base class)
+ *          |- basic_hash_tag (base class)
+ *          |   |- cc_hash_tag
+ *          |   `- gp_hash_tag
+ *          |
+ *          `- basic_tree_tag (base class)
+ *              |- tree_tag (base)
+ *              |    |- rb_tree_tag
+ *              |    |- splay_tree_tag
+ *              |    `- ov_tree_tag (cartesian tree)
+ *              |
+ *              `- trie_tag
+ *                   `- pat_trie_tag
  *
- * Container tags
- * ==============
- * associaive_container_tag (base class)
- *    |- basic_hash_tag (base class)
- *    |   |- cc_hash_tag
- *    |   `- gp_hash_tag
- *    |
- *    |- basic_tree_tag (base class)
- *    |   |- tree_tag (base)
- *    |   |    |- rb_tree_tag
- *    |   |    |- splay_tree_tag
- *    |   |    `- ov_tree_tag (cartesian tree)
- *    |   |
- *    |   `- trie_tag
- *    |        `- pat_trie_tag
- *    |
- *    `- list_update_tag
+ *       priority_queue_tag
+ *          |- pairing_heap_tag
+ *          |- binomial_heap_tag
+ *          |- rc_binomial_heap_tag
+ *          |- binary_heap_tag
+ *          `- thin_heap_tag
  *
- * priority_queue_tag
- *    |- pairing_heap_tag
- *    |- binomial_heap_tag
- *    |- rc_binomial_heap_tag
- *    |- binary_heap_tag
- *    `- thin_heap_tag
+ * .-------------------------.
+ * | Trie node-update policy |
+ * '-------------------------'
+ *      1. trie_prefix_search_node_update
+ *      2. trie_order_statistic_node_update
  *
- * Useful policies
- * ====================
- * 1. Trie node-update policy
- *    1. trie_prefix_search_node_update
- *    2. trie_order_statistic_node_update
- *    3. null_trie_node_update
+ * .---------------------------.
+ * | Trie element access trait |
+ * '---------------------------'
+ *      1. trie_string_access_traits<>
  *
- * 2. Trie element access trait
- *    1. string_trie_e_access_traits
+ * .-------------------------.
+ * | Tree node-update policy |
+ * '-------------------------'
+ *      1. tree_order_statistics_node_update
  *
- * 3. Tree node-update policy
- *    1. tree_order_statistics_node_update
- *
- * 4. List update policy
- *    1. move_to_front_lu_policy
- *    2. counter_lu_policy
+ * .--------------------.
+ * | List update policy |
+ * '--------------------'
+ *      1. lu_move_to_front_policy<>
+ *      2. lu_counter_lu_policy<>
  *
  * https://gcc.gnu.org/onlinedocs/libstdc++/ext/pb_ds/interface.html
  * https://gcc.gnu.org/onlinedocs/libstdc++/manual/policy_data_structures_design.html
