@@ -148,7 +148,7 @@ int main() {
  * ====================
  * 1. Trie node-update policy
  *    1. trie_prefix_search_node_update
- *    2. trie_order_statics_node_update
+ *    2. trie_order_statistic_node_update
  *    3. null_trie_node_update
  *
  * 2. Trie element access trait
