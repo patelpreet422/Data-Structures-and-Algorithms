@@ -3,29 +3,40 @@
 #include <vector>
 
 using namespace std;
-
-int max_subarray_sum(vector<int> &A) {
-  bool all_negative = true;
-
-  for (auto e : A) {
-    all_negative &= (e < 0);
+int maxSubArray(vector<int>& nums) {
+  if(nums.empty()) {
+    return 0;
   }
 
-  if (all_negative) {
-    return *max_element(begin(A), end(A));
-  }
+  int n = nums.size();
+  int cs = nums[0];
+  int ms = nums[0];
 
-  int s = 0;
-  int rs = 0;
-  int n = A.size();
-  for (int i = 0; i < n; ++i) {
-    rs += A[i];
-    if (rs < 0) {
-      rs = 0;
+  int start = 0;
+  int end = 0;
+
+  for(int i = 1; i < n; ++i) {
+    if(cs <= 0) {
+      cs = 0;
+      start = i;
     }
-    s = max(s, rs);
+
+    cs += nums[i];
+
+    if(cs > ms) {
+      end = i;
+      ms = cs;
+    }
   }
-  return s;
+
+  // start and end represents the range
+  for(int i = start; i <= end; ++i) {
+    cout << nums[i] << ' ';
+  }
+
+  cout << '\n';
+
+  return ms;
 }
 
 int main() {
