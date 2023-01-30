@@ -41,6 +41,6 @@ int maxSubArray(vector<int>& nums) {
 
 int main() {
   vector<int> vec{-2, -3, 4, -1, -2, 1, 5, -3};
-  cout << max_subarray_sum(vec) << '\n';
+  cout << maxSubArray(vec) << '\n';
   return 0;
 }
