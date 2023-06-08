@@ -33,6 +33,8 @@ void dfs(int v) {
     The invariant says that we update the low value of a node on encounter a tree edge or only if the child node is part of back edge (i.e, the node has yet been traversed completely)
     we do not update the low link in case of forward edge and cross edge
     
+    see https://www.youtube.com/watch?v=wUgWX0nc4NY
+    
     */
     if (state[e] == BEING_ASSIGNED_SCC) {
       low[v] = min(low[v], id[e]);
