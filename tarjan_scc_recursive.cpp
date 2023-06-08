@@ -26,6 +26,13 @@ void dfs(int v) {
 
     /*
     Note that v.lowlink := min(v.lowlink, w.index) is the correct way to update v.lowlink if w is on stack. Because w is on the stack already, (v, w) is a back-edge in the DFS tree and therefore w is not in the subtree of v. Because v.lowlink takes into account nodes reachable only through the nodes in the subtree of v we must stop at w and use w.index instead of w.lowlink.
+    It must be noted that if we update the low link on as soon as the back edge is encountered we may end-up with wrong number of scc's.
+    This is because the value of low is highly dependant on the order in which we perform the dfs and to prevent this from happening we use 
+    Tarjan's invariant which is the meat of the algorithm which prevents us from labeling nodes incorrectly.
+    
+    The invariant says that we update the low value of a node on encounter a tree edge or only if the child node is part of back edge (i.e, the node has yet been traversed completely)
+    we do not update the low link in case of forward edge and cross edge
+    
     */
     if (state[e] == BEING_ASSIGNED_SCC) {
       low[v] = min(low[v], id[e]);
