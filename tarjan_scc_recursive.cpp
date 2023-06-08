@@ -24,6 +24,9 @@ void dfs(int v) {
       low[v] = min(low[v], low[e]);
     }
 
+    /*
+    Note that v.lowlink := min(v.lowlink, w.index) is the correct way to update v.lowlink if w is on stack. Because w is on the stack already, (v, w) is a back-edge in the DFS tree and therefore w is not in the subtree of v. Because v.lowlink takes into account nodes reachable only through the nodes in the subtree of v we must stop at w and use w.index instead of w.lowlink.
+    */
     if (state[e] == BEING_ASSIGNED_SCC) {
       low[v] = min(low[v], id[e]);
     }
